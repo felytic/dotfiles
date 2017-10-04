@@ -18,7 +18,9 @@ set hlsearch
 
 set splitbelow
 set splitright
+
 set nowrap
+set noswapfile
 
 syntax on
 
