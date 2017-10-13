@@ -25,8 +25,6 @@ keys = [
     # multiple stack panes
     Key([mod, 'shift'], 'Return', lazy.layout.toggle_split()),
 
-    Key([mod], 'Return', lazy.spawn('urxvt')),
-    Key([mod], 'g', lazy.spawn('google-chrome-stable')),
 
     # Toggle between different layouts as defined below
     Key([mod], 'space', lazy.next_layout()),
@@ -42,6 +40,12 @@ keys = [
         lazy.spawn('amixer -c 1 -q set Master 2dB-')),
     Key([], 'XF86AudioMute',
         lazy.spawn('amixer -c 1 -q set Master toggle')),
+
+    Key([mod], 'Return', lazy.spawn('urxvt')),
+    Key([mod], 'g', lazy.spawn('google-chrome-stable')),
+    Key([mod], 'p', lazy.spawn('gpmdp')),
+    Key([mod], 't', lazy.spawn('telegram-desktop')),
+    Key([mod], 'x', lazy.spawn('xfe')),
 ]
 
 groups = [Group(i) for i in '123456789']
