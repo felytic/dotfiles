@@ -1,0 +1,12 @@
+[user]
+	email = felytic@gmail.com
+	name = felytic
+[alias]
+	co = checkout
+	b = branch
+	pl = pull
+	ph = push
+	c = commit
+	s = status
+	a = add
+	d = diff
