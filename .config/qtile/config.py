@@ -41,6 +41,11 @@ keys = [
     Key([], 'XF86AudioMute',
         lazy.spawn('amixer -c 1 -q set Master toggle')),
 
+    Key([], 'XF86MonBrightnessUp',
+        lazy.spawn('xbacklight -inc 10')),
+    Key([], 'XF86MonBrightnessDown',
+        lazy.spawn('xbacklight -dec 10')),
+
     Key([mod], 'Return', lazy.spawn('urxvt')),
     Key([mod], 'g', lazy.spawn('google-chrome-stable')),
     Key([mod], 'p', lazy.spawn('gpmdp')),
