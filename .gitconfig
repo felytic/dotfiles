@@ -7,7 +7,7 @@
 	pl = pull
 	ph = push
 	c = commit
-	s = status
+	s = status -s
 	a = add
 	d = diff
 [core]
