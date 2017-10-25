@@ -1,38 +1,52 @@
+import os
+
 from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget
 
-mod = 'mod4'
+# Keys
+ALT = 'mod1'
+WIN = 'mod4'
+TAB = 'Tab'
+CTRL = 'control'
+SHIFT = 'shift'
+RETURN = 'Return'
+SPACE = 'space'
+
+COMMANDS = {
+    'lock': os.path.join(os.path.dirname(__file__), 'bin/lock')
+}
+
 
 keys = [
     # Switch between windows in current stack pane
-    Key([mod], 'k', lazy.layout.down()),
-    Key([mod], 'j', lazy.layout.up()),
+    Key([WIN], 'k', lazy.layout.down()),
+    Key([WIN], 'j', lazy.layout.up()),
 
     # Move windows up or down in current stack
-    Key([mod, 'control'], 'k', lazy.layout.shuffle_down()),
-    Key([mod, 'control'], 'j', lazy.layout.shuffle_up()),
+    Key([WIN, CTRL], 'k', lazy.layout.shuffle_down()),
+    Key([WIN, CTRL], 'j', lazy.layout.shuffle_up()),
 
     # Switch window focus to other pane(s) of stack
-    Key([mod], 'Tab', lazy.layout.next()),
+    Key([WIN], TAB, lazy.layout.next()),
 
     # Swap panes of split stack
-    Key([mod, 'shift'], 'space', lazy.layout.rotate()),
+    Key([WIN, SHIFT], SPACE, lazy.layout.rotate()),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod, 'shift'], 'Return', lazy.layout.toggle_split()),
+    Key([WIN, SHIFT], RETURN, lazy.layout.toggle_split()),
 
 
     # Toggle between different layouts as defined below
-    Key([mod], 'space', lazy.next_layout()),
-    Key([mod], 'w', lazy.window.kill()),
+    Key([WIN], SPACE, lazy.next_layout()),
+    Key([WIN], 'w', lazy.window.kill()),
 
-    Key([mod, 'control'], 'r', lazy.restart()),
-    Key([mod, 'control'], 'q', lazy.shutdown()),
-    Key([mod], 'r', lazy.spawncmd()),
+    Key([WIN, CTRL], 'r', lazy.restart()),
+    Key([WIN, CTRL], 'q', lazy.shutdown()),
+    Key([WIN], 'r', lazy.spawncmd()),
 
     Key([], 'XF86AudioRaiseVolume',
         lazy.spawn('amixer -c 1 -q set Master 2dB+')),
@@ -46,24 +60,26 @@ keys = [
     Key([], 'XF86MonBrightnessDown',
         lazy.spawn('xbacklight -dec 10')),
 
-    Key([mod], 'Return', lazy.spawn('urxvt')),
-    Key([mod], 'g', lazy.spawn('google-chrome-stable')),
-    Key([mod], 'p', lazy.spawn('gpmdp')),
-    Key([mod], 't', lazy.spawn('telegram-desktop')),
-    Key([mod], 'x', lazy.spawn('xfe')),
+    Key([WIN], RETURN, lazy.spawn('urxvt')),
+    Key([WIN], 'g', lazy.spawn('google-chrome-stable')),
+    Key([WIN], 'p', lazy.spawn('gpmdp')),
+    Key([WIN], 't', lazy.spawn('telegram-desktop')),
+    Key([WIN], 'x', lazy.spawn('xfe')),
+
+    Key([], 'l', lazy.spawn(COMMANDS['lock'])),
 ]
 
 groups = [Group(i) for i in '123456789']
 
 for i in groups:
-    # mod1 + letter of group = switch to group
+    # win + letter of group = switch to group
     keys.append(
-        Key([mod], i.name, lazy.group[i.name].toscreen())
+        Key([WIN], i.name, lazy.group[i.name].toscreen())
     )
 
-    # mod1 + shift + letter of group = switch to & move focused window to group
+    # win + shift + letter of group = switch to & move focused window to group
     keys.append(
-        Key([mod, 'shift'], i.name, lazy.window.togroup(i.name))
+        Key([WIN, SHIFT], i.name, lazy.window.togroup(i.name))
     )
 
 layouts = [
@@ -98,11 +114,11 @@ screens = [
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], 'Button1', lazy.window.set_position_floating(),
+    Drag([WIN], 'Button1', lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
-    Drag([mod], 'Button3', lazy.window.set_size_floating(),
+    Drag([WIN], 'Button3', lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], 'Button2', lazy.window.bring_to_front())
+    Click([WIN], 'Button2', lazy.window.bring_to_front())
 ]
 
 dgroups_key_binder = None
