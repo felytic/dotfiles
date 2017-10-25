@@ -66,7 +66,7 @@ keys = [
     Key([WIN], 't', lazy.spawn('telegram-desktop')),
     Key([WIN], 'x', lazy.spawn('xfe')),
 
-    Key([], 'l', lazy.spawn(COMMANDS['lock'])),
+    Key([CTRL, ALT], 'l', lazy.spawn(COMMANDS['lock'])),
 ]
 
 groups = [Group(i) for i in '123456789']
