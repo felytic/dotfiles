@@ -9,7 +9,7 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-PS1="\[\e[2;34m\]\$(date +%H:%M:%S)\[\e[m\] \[\e[1;30m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[02;33m\]\$(parse_git_branch)\[\e[m\] \[\e[1;32m\]\$\[\e[m\] "
+PS1="\[\e[2;34m\]\$(date +%H:%M:%S)\[\e[m\] \[\e[1;30m\]\u@\h\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[02;33m\]\$(parse_git_branch)\[\e[m\] \[\e[1;32m\]\$\[\e[m\] "
 
 # Up/down arrow key searches through input command
 bind '"\e[A": history-search-backward'
