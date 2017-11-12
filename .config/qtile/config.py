@@ -17,7 +17,6 @@ COMMANDS = {
     'lock': os.path.join(os.path.dirname(__file__), 'bin/lock')
 }
 
-
 keys = [
     # Switch between windows in current stack pane
     Key([WIN], 'k', lazy.layout.down()),
@@ -48,28 +47,28 @@ keys = [
     Key([WIN, CTRL], 'q', lazy.shutdown()),
     Key([WIN], 'r', lazy.spawncmd()),
 
-    Key([], 'XF86AudioRaiseVolume',
-        lazy.spawn('amixer -c 1 -q set Master 2dB+')),
-    Key([], 'XF86AudioLowerVolume',
-        lazy.spawn('amixer -c 1 -q set Master 2dB-')),
-    Key([], 'XF86AudioMute',
-        lazy.spawn('amixer -c 1 -q set Master toggle')),
+    # Volume control
+    Key([WIN], 'Up', lazy.spawn('amixer -c 1 -q set Master 2dB+')),
+    Key([WIN], 'Down', lazy.spawn('amixer -c 1 -q set Master 2dB-')),
 
-    Key([], 'XF86MonBrightnessUp',
-        lazy.spawn('xbacklight -inc 10')),
-    Key([], 'XF86MonBrightnessDown',
-        lazy.spawn('xbacklight -dec 10')),
+    # Brightness control
+    Key([WIN], 'Right', lazy.spawn('xbacklight -inc 10')),
+    Key([WIN], 'Left', lazy.spawn('xbacklight -dec 10')),
 
+    # Applications hotkeys
     Key([WIN], RETURN, lazy.spawn('urxvt')),
     Key([WIN], 'g', lazy.spawn('google-chrome-stable')),
     Key([WIN], 'p', lazy.spawn('gpmdp')),
     Key([WIN], 't', lazy.spawn('telegram-desktop')),
     Key([WIN], 'x', lazy.spawn('xfe')),
 
+    # Lock screen
     Key([CTRL, ALT], 'l', lazy.spawn(COMMANDS['lock'])),
 ]
 
-groups = [Group(i) for i in '123456789']
+# ================================ GROUPS =====================================
+
+groups = [Group(i) for i in '1234567890']
 
 for i in groups:
     # win + letter of group = switch to group
@@ -81,6 +80,8 @@ for i in groups:
     keys.append(
         Key([WIN, SHIFT], i.name, lazy.window.togroup(i.name))
     )
+
+# =============================================================================
 
 layouts = [
     layout.Max(),
@@ -96,7 +97,12 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(borderwidth=2, rounded=False),
+                widget.GroupBox(
+                    borderwidth=2,
+                    rounded=False,
+                    this_current_screen_border='7dbc2b',
+                    use_mouse_wheel=False
+                ),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Systray(),
@@ -105,9 +111,9 @@ screens = [
                 widget.Sep(),
                 widget.Battery(update_delay=5),
                 widget.Sep(),
-                widget.Clock(format=' %Y-%m-%d %a %H:%M'),
+                widget.Clock(format=' %Y-%m-%d %a %H:%M:%S'),
             ],
-            22,
+            22,  # bar height
         ),
     ),
 ]
