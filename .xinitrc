@@ -24,5 +24,5 @@ if [ -f "$usermodmap" ]; then
 fi
 
 exec qtile
-xbindkeys
+#xbindkeys
 
