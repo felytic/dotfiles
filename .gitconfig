@@ -5,12 +5,14 @@
 	co = checkout
 	pl = pull
 	rb = rebase
+	it = !git init && git commit -m \"root\" --allow-empty
+	lg = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(dim green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
 	b = branch -vv
 	p = push
 	c = commit
-	s = status -s
+	s = status -s -b
 	a = add
-	d = diff
+	d = diff --word-diff
 	r = reset
 	m = merge
 [core]
