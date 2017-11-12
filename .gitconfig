@@ -3,12 +3,15 @@
 	name = felytic
 [alias]
 	co = checkout
-	b = branch
 	pl = pull
-	ph = push
+	rb = rebase
+	b = branch -vv
+	p = push
 	c = commit
 	s = status -s
 	a = add
 	d = diff
+	r = reset
+	m = merge
 [core]
 	editor = vim
