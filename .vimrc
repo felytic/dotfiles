@@ -54,6 +54,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'Yggdroot/indentLine'
+
 call vundle#end()
 filetype plugin indent on
 
