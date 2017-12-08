@@ -85,7 +85,7 @@ for i in groups:
 
 layouts = [
     layout.Max(),
-    layout.Stack(num_stacks=2)
+    layout.Matrix(num_stacks=4),
 ]
 
 widget_defaults = dict(
