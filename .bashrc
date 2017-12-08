@@ -13,6 +13,7 @@ PS1="\[\e[2;35m\]\$(date +%H:%M:%S)\[\e[m\] \[\e[1;34m\]\u\[\e[m\]\[\e[1;36m\]@\
 
 # Up/down arrow key searches through input command
 bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
 
 # Don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
