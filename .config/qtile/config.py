@@ -54,8 +54,6 @@ keys = [
     # Applications hotkeys
     Key([WIN], RETURN, lazy.spawn('urxvt')),
     Key([WIN], 'g', lazy.spawn('google-chrome-stable')),
-    Key([WIN], 'p', lazy.spawn('gpmdp')),
-    Key([WIN], 't', lazy.spawn('telegram-desktop')),
     Key([WIN], 'x', lazy.spawn('xfe')),
 
     # Lock screen
