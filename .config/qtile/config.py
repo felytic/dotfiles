@@ -44,8 +44,11 @@ keys = [
     Key([WIN], 'r', lazy.spawncmd()),
 
     # Volume control
-    Key([WIN], 'Up', lazy.spawn('amixer -c 1 -q set Master 2dB+')),
-    Key([WIN], 'Down', lazy.spawn('amixer -c 1 -q set Master 2dB-')),
+    Key([WIN], 'Up', lazy.spawn('amixer set Master 5%+')),
+    Key([WIN], 'Down', lazy.spawn('amixer set Master 5%-')),
+    Key([], 'XF86AudioMute', lazy.spawn('amixer set Master toggle')),
+    Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer set Master 5%+')),
+    Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer set Master 5%-')),
 
     # Brightness control
     Key([WIN], 'Right', lazy.spawn('xbacklight -inc 10')),
@@ -101,7 +104,7 @@ screens = [
                 widget.WindowName(),
                 widget.Systray(),
                 widget.Sep(),
-                widget.Volume(device='hw:1'),
+                widget.Volume(),
                 widget.Sep(),
                 widget.Battery(update_delay=5),
                 widget.Sep(),
