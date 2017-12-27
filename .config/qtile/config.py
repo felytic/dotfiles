@@ -13,10 +13,6 @@ SHIFT = 'shift'
 RETURN = 'Return'
 SPACE = 'space'
 
-COMMANDS = {
-    'lock': os.path.join(os.path.dirname(__file__), 'bin/lock')
-}
-
 keys = [
     # Switch between windows in current stack pane
     Key([WIN], 'k', lazy.layout.down()),
@@ -63,7 +59,7 @@ keys = [
     Key([WIN], 'x', lazy.spawn('xfe')),
 
     # Lock screen
-    Key([CTRL, ALT], 'l', lazy.spawn(COMMANDS['lock'])),
+    Key([CTRL, ALT], 'l', lazy.spawn('slock')),
 ]
 
 # ================================ GROUPS =====================================

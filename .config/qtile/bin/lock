@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if ! pgrep xscreensaver >/dev/null 2>&1
-then
-    /usr/bin/xscreensaver -no-capture-stderr -no-splash &
-fi
-
-/usr/bin/xscreensaver-command -lock
