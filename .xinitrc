@@ -23,6 +23,6 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
+xss-lock -- slock &
 exec qtile
-#xbindkeys
 
