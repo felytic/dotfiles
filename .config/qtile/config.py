@@ -12,6 +12,7 @@ CTRL = 'control'
 SHIFT = 'shift'
 RETURN = 'Return'
 SPACE = 'space'
+ESC = 'Escape'
 
 keys = [
     # Switch between windows in current stack pane
@@ -61,6 +62,9 @@ keys = [
 
     # Lock screen
     Key([CTRL, ALT], 'l', lazy.spawn('slock')),
+
+    # Previous group
+    Key([WIN], ESC, lazy.screen.toggle_group())
 ]
 
 # ================================ GROUPS =====================================
