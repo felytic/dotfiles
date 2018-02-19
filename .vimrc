@@ -76,6 +76,8 @@ let python_highlight_all=1
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+map <Leader>b Oimport pdb; pdb.set_trace() #  BREAKPOINT<C-c>
+
 let g:airline_powerline_fonts = 1
 
 let g:syntastic_always_populate_loc_list = 1
@@ -88,7 +90,7 @@ map <f2> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " files to hide in NERDTree
-let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$']
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$', '__pycache__']
 
 autocmd vimenter * NERDTree
 
@@ -117,5 +119,4 @@ call NERDTreeHighlightFile('log', 'gray')
 call NERDTreeHighlightFile('md', 'gray')
 call NERDTreeHighlightFile('conf', 'red')
 call NERDTreeHighlightFile('html', 'magenta')
-
 "==============================================================================
