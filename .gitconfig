@@ -12,13 +12,15 @@
 	lg = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(dim green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
 	b = branch -vv
 	p = push
+	pf = push --force
 	c = commit
-	c = commit --amend
+	ca = commit --amend
 	s = status -s -b
 	a = add
 	d = diff
-	r = rebase
-	re  = reset --hard
+	rb = rebase
+	r  = reset
+	rh  = reset --hard
 	m = merge
 	f = fetch
 	fa = fetch --all
