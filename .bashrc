@@ -44,9 +44,4 @@ alias ln='ln -i'
 # Create parent directories on demand
 alias mkdir='mkdir -pv'
 
-function cd {
-    builtin cd "$@"
-    if [ -f "Pipfile" ] ; then
-        pipenv shell
-    fi
-  }
+alias py='python'
