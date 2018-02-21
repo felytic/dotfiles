@@ -76,7 +76,7 @@ let python_highlight_all=1
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-map <Leader>b Oimport pdb; pdb.set_trace() #  BREAKPOINT<C-c>
+map <Leader>b Oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 
 let g:airline_powerline_fonts = 1
 
@@ -101,7 +101,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Renamed"   : "%",
     \ "Unmerged"  : "═",
     \ "Deleted"   : "x",
-    \ "Dirty"     : "D",
+    \ "Dirty"     : "@",
     \ "Clean"     : "C",
     \ 'Ignored'   : "I",
     \ "Unknown"   : "?"}
@@ -119,4 +119,7 @@ call NERDTreeHighlightFile('log', 'gray')
 call NERDTreeHighlightFile('md', 'gray')
 call NERDTreeHighlightFile('conf', 'red')
 call NERDTreeHighlightFile('html', 'magenta')
+
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 "==============================================================================
