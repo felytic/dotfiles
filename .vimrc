@@ -55,6 +55,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'Yggdroot/indentLine'
+Plugin 'tpope/vim-fugitive'
+Plugin 'junegunn/gv.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -81,6 +83,7 @@ map <Leader>b Oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 let g:airline_powerline_fonts = 1
 
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_python_checkers = ['pep8', 'pylint']
 
 "========================== NERD TREE =========================================
 
@@ -123,3 +126,11 @@ call NERDTreeHighlightFile('html', 'magenta')
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
 "==============================================================================
+map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+
+set diffopt+=vertical
+
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
