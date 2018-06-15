@@ -23,8 +23,7 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
-xmodmap -e 'clear Lock' # ensures you're not stuck in CAPS on mode
-xmodmap -e 'keycode 0x42=Escape' # remaps CAPS LOCK to ESC
+setxkbmap -layout us,ua -variant -option grp:caps_toggle,grp_led:caps,terminate:ctrl_alt_bksp &
 
 xss-lock -- slock &
 exec qtile
