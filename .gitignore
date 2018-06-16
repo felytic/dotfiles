@@ -2,3 +2,10 @@
 !.*
 .bash_history
 .ssh/
+.viminfo
+.cache/
+.python_history
+.vim/
+.Xauthority
+.local/
+.config/qtile/__pycache__/
