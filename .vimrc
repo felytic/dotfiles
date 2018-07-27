@@ -83,7 +83,15 @@ map <Leader>b Oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 let g:airline_powerline_fonts = 1
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_python_checkers = ['pep8', 'pylint']
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_python_checkers = ['pyflakes', 'flake8']
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 "========================== NERD TREE =========================================
 
