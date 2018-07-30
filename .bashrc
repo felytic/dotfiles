@@ -32,6 +32,8 @@ alias l='ls -CF'
 
 alias v='vim'
 alias g='git'
+alias r='ranger'
+alias e='emacs'
 
 # Do not delete / or prompt if deleting more than 3 files at a time #
 alias rm='rm -I --preserve-root'
