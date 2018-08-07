@@ -97,6 +97,8 @@
 
 (use-package evil
   :config
+  (define-key evil-normal-state-map (kbd "H") 'evil-first-non-blank)
+  (define-key evil-normal-state-map (kbd "L") 'evil-end-of-line)
   (evil-mode 1))
 
 (use-package gruvbox-theme
@@ -109,6 +111,7 @@
 
 (use-package linum-relative
     :config
+    (setq linum-relative-current-symbol "")
     (add-hook 'prog-mode-hook 'linum-relative-mode))
 
 (use-package neotree
@@ -154,7 +157,7 @@
   :config
   (global-set-key (kbd "C-{") 'git-gutter:previous-hunk)
   (global-set-key (kbd "C-}") 'git-gutter:next-hunk)
-  (global-set-key (kbd "U") 'git-gutter:revert-hunk)
+  (define-key evil-normal-state-map (kbd "U") 'git-gutter:revert-hunk)
 
   (set-face-background 'git-gutter:modified "#fe8019")
   (set-face-background 'git-gutter:added "#b8bb26")
@@ -185,15 +188,6 @@
   (global-set-key (kbd "C-8") 'anaconda-mode-find-references)
   (add-hook 'python-mode-hook 'anaconda-mode))
 
-(use-package company-anaconda)
-
-(use-package company
-  :config
-  (add-to-list 'company-backends '(company-anaconda :with company-capf))
-  (add-hook 'after-init-hook 'global-company-mode)
-  (add-to-list 'company-backends 'company-anaconda))
-
-
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'character)
@@ -213,6 +207,7 @@
   (helm-mode 1)
   (setq helm-autoresize-mode t)
   (setq helm-buffer-max-length 40)
+  (setq helm-split-window-inside-p t)
   (global-set-key (kbd "M-x") #'helm-M-x)
   (define-key helm-map (kbd "S-SPC") 'helm-toggle-visible-mark)
   (define-key helm-find-files-map (kbd "C-k") 'helm-find-files-up-one-level))
@@ -226,3 +221,12 @@
 (use-package helm-ag
   :config
   (global-set-key [f5] 'helm-projectile-ag))
+
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package auto-complete
+  :config
+  (ac-config-default))
+
+;;; .emacs.el ends here
