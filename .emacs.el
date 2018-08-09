@@ -93,6 +93,19 @@
 
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 
+(defun add-py-debug ()
+    (interactive)
+    (move-beginning-of-line 1)
+    (insert "import pdb; pdb.set_trace()  # BREAKPOINT\n"))
+
+(defun goto-py-debug()
+  (interactive)
+  (search-forward-regexp "^[ ]*import pdb; pdb.set_trace()")
+  (move-beginning-of-line 1))
+
+(global-set-key [f9] 'add-py-debug)
+(global-set-key [f8] 'goto-py-debug)
+
 ;;;; ====================== Packages ======================
 
 (use-package evil
@@ -181,12 +194,9 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package anaconda-mode
+(use-package elpy
   :config
-  (global-set-key (kbd "C-0") 'anaconda-mode-find-definitions)
-  (global-set-key (kbd "C-9") 'anaconda-mode-find-definitions)
-  (global-set-key (kbd "C-8") 'anaconda-mode-find-references)
-  (add-hook 'python-mode-hook 'anaconda-mode))
+  (elpy-enable))
 
 (use-package highlight-indent-guides
   :config
@@ -223,10 +233,11 @@
   (global-set-key [f5] 'helm-projectile-ag))
 
 (use-package flycheck
-  :init (global-flycheck-mode))
-
-(use-package auto-complete
+  :init (global-flycheck-mode)
   :config
-  (ac-config-default))
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(use-package pylint)
 
 ;;; .emacs.el ends here
