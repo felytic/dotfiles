@@ -1,44 +1,9 @@
-(require 'package)
+;;;; ========================== General =======================================
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(setq package-archive-priorities
-      '(("melpa-stable" . 20)
-        ("melpa" . 0)
-        ("gnu" . 20)))
-
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-
-;; keep the installed packages in .emacs.d
-(setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
-(package-initialize)
-
-;; Don't clutter the current directory with backups. Save them in a
-;; separate directory.
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+(setq user-full-name "Felytic" user-mail-address "felytic@gmail.com")
 
 ;; Open config (this file)
-(global-set-key (kbd "<f12>") (lambda () (interactive) (find-file user-init-file)))
-
-;; update the package metadata is the local cache is missing
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(setq user-full-name "Felytic"
-      user-mail-address "felytic@gmail.com")
-
-;; Always load newest byte code
-(setq load-prefer-newer t)
-
-(when (not (package-installed-p 'use-package))
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(setq use-package-always-ensure t)
-; (setq use-package-verbose t)
+(global-set-key [f12] (lambda () (interactive) (find-file user-init-file)))
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
@@ -47,56 +12,24 @@
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
-(setq-default fill-column 80)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(blink-cursor-mode -1)
-(setq ring-bell-function 'ignore)
-(setq inhibit-startup-screen t)
-
-(setq scroll-margin 0
-      scroll-conservatively 100000
-      scroll-preserve-screen-position 1)
-
-(line-number-mode t)
-(column-number-mode t)
-(size-indication-mode t)
-
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; more useful frame title, that show either a file or a
-;; buffer name (if the buffer isn't visiting a file)
-(setq frame-title-format
-      '((:eval (if (buffer-file-name)
-                   (abbreviate-file-name (buffer-file-name))
-                 "%b"))))
+;; Hide/show blocks
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-verbose t)
+;;;; =========================== Hotkeys ======================================
 
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-l") 'windmove-right)
 
-(set-face-attribute 'default nil :font "xos4 Terminess Powerline-14")
-
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-
 (defun add-py-debug ()
     (interactive)
-    (move-beginning-of-line 1)
+    (newline-and-indent)
     (insert "import pdb; pdb.set_trace()  # BREAKPOINT\n"))
+
 
 (defun goto-py-debug()
   (interactive)
@@ -106,7 +39,69 @@
 (global-set-key [f9] 'add-py-debug)
 (global-set-key [f8] 'goto-py-debug)
 
-;;;; ====================== Packages ======================
+
+;;;; ============================== UI ========================================
+
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(blink-cursor-mode -1)
+(line-number-mode t)
+(column-number-mode t)
+(size-indication-mode t)
+(setq ring-bell-function 'ignore)
+(setq inhibit-startup-screen t)
+
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
+
+(set-face-attribute 'default nil :font "xos4 Terminess Powerline-14")
+
+
+;;;; ========================= Packages configuration =========================
+
+(require 'package)
+
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ("melpa" . 0)
+        ("gnu" . 20)))
+
+;; Don't flud this file with custom vars
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+;; keep the installed packages in .emacs.d
+(setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
+(package-initialize)
+
+;; update the package metadata is the local cache is missing
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Always load newest byte code
+(setq load-prefer-newer t)
+
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(setq use-package-always-ensure t)
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-verbose t)
+
+
+;;;; ============================ Packages list ===============================
 
 (use-package evil
   :config
@@ -126,6 +121,23 @@
     :config
     (setq linum-relative-current-symbol "")
     (add-hook 'prog-mode-hook 'linum-relative-mode))
+
+(use-package elpy
+  :config
+  (elpy-enable)
+  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
+  (setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+
+(use-package flycheck
+  :init (global-flycheck-mode)
+  :config
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(use-package ein)
 
 (use-package neotree
   :config
@@ -151,8 +163,9 @@
   (set-face-foreground 'neo-expand-btn-face "#ffaf00")
 
   (setq neo-autorefresh nil)
-  (setq neo-theme 'arrow)
+  (setq neo-theme 'ascii)
   (setq neo-vc-integration '(face))
+  (setq neo-mode-line-type 'neotree)
   (add-hook 'after-init-hook 'neotree-toggle)
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (global-set-key [f2] 'neotree-toggle))
@@ -162,30 +175,6 @@
   (setq whitespace-style '(face empty tabs lines-tail trailing))
   (global-whitespace-mode t))
 
-(use-package find-file-in-project)
-
-(use-package magit)
-
-(use-package git-gutter-fringe
-  :config
-  (global-set-key (kbd "C-{") 'git-gutter:previous-hunk)
-  (global-set-key (kbd "C-}") 'git-gutter:next-hunk)
-  (define-key evil-normal-state-map (kbd "U") 'git-gutter:revert-hunk)
-
-  (set-face-background 'git-gutter:modified "#fe8019")
-  (set-face-background 'git-gutter:added "#b8bb26")
-  (set-face-background 'git-gutter:deleted "#fb4933")
-
-  (set-face-foreground 'git-gutter:modified "#fe8019")
-  (set-face-foreground 'git-gutter:added "#b8bb26")
-  (set-face-foreground 'git-gutter:deleted "#fb4933")
-
-  (fringe-mode 2)
-  (setq git-gutter:ask-p nil)
-  (setq git-gutter:update-interval 2)
-  (global-git-gutter-mode t))
-
-
 (use-package evil-commentary
   :config
   (evil-commentary-mode))
@@ -193,10 +182,6 @@
 (use-package evil-surround
   :config
   (global-evil-surround-mode 1))
-
-(use-package elpy
-  :config
-  (elpy-enable))
 
 (use-package highlight-indent-guides
   :config
@@ -209,6 +194,7 @@
 
 (use-package projectile
   :config
+  (diminish 'projectile-mode)
   (projectile-global-mode t))
 
 (use-package helm
@@ -232,12 +218,48 @@
   :config
   (global-set-key [f5] 'helm-projectile-ag))
 
-(use-package flycheck
-  :init (global-flycheck-mode)
-  :config
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+(use-package magit)
 
-(use-package pylint)
+(use-package git-gutter-fringe
+  :config
+  (global-set-key (kbd "C-{") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-}") 'git-gutter:next-hunk)
+  (define-key evil-normal-state-map (kbd "U") 'git-gutter:revert-hunk)
+
+  (set-face-background 'git-gutter:modified "#fe8019")
+  (set-face-background 'git-gutter:added "#b8bb26")
+  (set-face-background 'git-gutter:deleted "#fb4933")
+
+  (set-face-foreground 'git-gutter:modified "#fe8019")
+  (set-face-foreground 'git-gutter:added "#b8bb26")
+  (set-face-foreground 'git-gutter:deleted "#fb4933")
+
+  (setq git-gutter:ask-p nil)
+  (setq git-gutter:update-interval 2)
+  (global-git-gutter-mode t))
+
+
+(use-package dimmer
+  :config
+  (setq dimmer-fraction 0.3)
+  (dimmer-mode))
+
+(use-package spacemacs-theme
+  :init
+  (setq spacemacs-theme-org-agenda-height nil)
+  (setq spacemacs-theme-org-height nil))
+
+(use-package spaceline
+  :demand t
+  :init
+  (setq powerline-default-separator 'arrow-fade)
+  :config
+  (require 'spaceline-config)
+  (spaceline-helm-mode)
+  (spaceline-emacs-theme))
+
+(use-package which-key
+  :config
+  (which-key-mode))
 
 ;;; .emacs.el ends here
