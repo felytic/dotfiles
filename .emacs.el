@@ -25,6 +25,7 @@
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-l") 'windmove-right)
 
+
 (defun add-py-debug ()
     (interactive)
     (newline-and-indent)
@@ -38,6 +39,18 @@
 
 (global-set-key [f9] 'add-py-debug)
 (global-set-key [f8] 'goto-py-debug)
+
+(defun toggle-fold ()
+  "Toggle fold all lines larger than indentation on current line."
+  (interactive)
+  (let ((col 1))
+    (save-excursion
+      (back-to-indentation)
+      (setq col (+ 1 (current-column)))
+      (set-selective-display
+       (if selective-display nil (or col 1))))))
+
+(global-set-key [C-tab] 'toggle-fold)
 
 
 ;;;; ============================== UI ========================================
@@ -120,22 +133,21 @@
 (use-package linum-relative
     :config
     (setq linum-relative-current-symbol "")
-    (add-hook 'prog-mode-hook 'linum-relative-mode))
+    (linum-relative-global-mode))
 
-(use-package elpy
+(use-package jedi
+  :init
+  (jedi:install-server)
   :config
-  (elpy-enable)
-  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
-  (setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
+
+(use-package auto-complete
+  :config
+  (ac-config-default))
 
 (use-package flycheck
-  :init (global-flycheck-mode)
-  :config
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+  :init (global-flycheck-mode))
 
 (use-package ein)
 
@@ -167,6 +179,7 @@
   (setq neo-vc-integration '(face))
   (setq neo-mode-line-type 'neotree)
   (add-hook 'after-init-hook 'neotree-toggle)
+  (setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "__pycache__"))
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (global-set-key [f2] 'neotree-toggle))
 
@@ -194,11 +207,9 @@
 
 (use-package projectile
   :config
-  (diminish 'projectile-mode)
   (projectile-global-mode t))
 
 (use-package helm
-  :ensure t
   :config
   (helm-mode 1)
   (setq helm-autoresize-mode t)
@@ -261,5 +272,11 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package dockerfile-mode)
+
+(use-package yaml-mode)
+
+(use-package vimrc-mode)
 
 ;;; .emacs.el ends here
