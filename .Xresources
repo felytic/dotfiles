@@ -12,6 +12,7 @@ urxvt.iso14755: False
 URxvt.perl-ext-common: selection-to-clipboard
 
 URxvt.font: xft:xos4 Terminess Powerline:size=14
+URxvt.fading: 20
 
 *background: #1d2021
 *foreground: #ebdbb2

@@ -32,6 +32,12 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+nnoremap L $
+nnoremap H ^
+
+let mapleader=" "
+
+nnoremap <F12> :vsplit ~/.vimrc <CR>
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -44,7 +50,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'luochen1990/rainbow'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-commentary'
-Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'majutsushi/tagbar'
@@ -57,6 +62,9 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-fugitive'
 Plugin 'junegunn/gv.vim'
+Plugin 'junegunn/fzf.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'chaoren/vim-wordmotion'
 
 call vundle#end()
 filetype plugin indent on
@@ -78,7 +86,7 @@ let python_highlight_all=1
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-map <Leader>b Oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
+map <F9> O<CR>import pdb; pdb.set_trace()  # BREAKPOINT <CR><C-c>
 
 let g:airline_powerline_fonts = 1
 
@@ -95,7 +103,7 @@ set statusline+=%*
 
 "========================== NERD TREE =========================================
 
-map <f2> :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR>
 
 "close vim when only NERDTree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -133,12 +141,14 @@ call NERDTreeHighlightFile('html', 'magenta')
 
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
+
 "==============================================================================
-map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+
+nnoremap <C-p> :GitGutterPrevHunk<CR>
+nnoremap <C-n> :GitGutterNextHunk<CR>
+
+map U :GitGutterUndoHunk <CR>
+
+map <F5> :Ag <CR>
 
 set diffopt+=vertical
-
-noremap <Leader>y "*y
-noremap <Leader>p "*p
-noremap <Leader>Y "+y
-noremap <Leader>P "+p
