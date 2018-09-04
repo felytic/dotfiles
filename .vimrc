@@ -7,7 +7,7 @@ set nocompatible  " Don't be compatible with VI
 set wildmenu  " Better command-line completion
 
 set relativenumber  " Enable relative line numbers
-set nu  " Display current line number
+set number  " Display current line number
 
 set tabstop=4  " One tab equal 4 spaces
 set softtabstop=2  " Or 2 if neseesary
@@ -17,7 +17,8 @@ set expandtab  " Insert spaces instead of tabs
 set ignorecase  " Use case insensitive search
 set smartcase  " Except when using capital letters
 
-set enc=utf-8  " Default encoding is UTF-8
+set encoding=utf-8  " Default encoding is UTF-8
+scriptencoding utf-8
 
 set colorcolumn=80  " Highlight 80th column
 
@@ -32,14 +33,14 @@ set noswapfile  " Disavle swap file
 
 set confirm  " Always ask for saving changes
 
-set background=dark  " Use dark UI 
+set background=dark  " Use dark UI
 
 set diffopt+=vertical  " Use vertical split for diffs
 
 setlocal spell spelllang=en_us  " Set default language for spellchecking
 
 
-" =================================== KEYS =================================== 
+" =================================== KEYS ===================================
 
 " Split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -52,7 +53,7 @@ nnoremap L $
 nnoremap H ^
 
 " Set Space as leader key
-let mapleader = " "
+let mapleader = ' '
 
 " Open this file on F12
 nnoremap <F12> :vsplit ~/.vimrc <CR>
@@ -61,8 +62,8 @@ nnoremap <F12> :vsplit ~/.vimrc <CR>
 map <F9> oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 
 
-" ================================== PLUGINS ================================= 
-set rtp+=~/.vim/bundle/Vundle.vim
+" ================================== PLUGINS =================================
+set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
   " Vundle, the plug-in manager
@@ -107,7 +108,7 @@ call vundle#begin()
 
   " A Git wrapper
   Plugin 'tpope/vim-fugitive'
-  
+
   " Shows a git diff in the gutter (sign column) and stages/undoes hunks
   Plugin 'airblade/vim-gitgutter'
 
@@ -118,7 +119,7 @@ call vundle#begin()
   Plugin 'Xuyuanp/nerdtree-git-plugin'
 
   " === Python ===
-   
+
   " Better Python indentation
   Plugin 'vim-scripts/indentpython.vim'
 
@@ -129,7 +130,7 @@ call vundle#begin()
   Plugin 'tmhedberg/SimpylFold'
 
   " === UI ===
-  
+
   " Retro groove color scheme
   Plugin 'morhetz/gruvbox'
 
@@ -148,7 +149,7 @@ call vundle#end()
 filetype plugin indent on " Determine the file type by its name and contents.
 syntax on  " Enable syntax highlighting
 
-" =============================== PLUGINS SETUP ============================== 
+" =============================== PLUGINS SETUP ==============================
 
 " === Rainbow ===
 let g:rainbow_active = 1
@@ -196,7 +197,7 @@ let g:ale_fixers = {
 
 
 " === Supertab ===
-let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = '<c-n>'
 
 
 " === IndentLine ===
@@ -223,11 +224,18 @@ let NERDTreeMapOpenVSplit='<TAB>'
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
 
-" Close vim when only NERDTree is open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Open NERDTree at startup
-autocmd vimenter * NERDTree
+augroup vimrc
+    " Close vim when only NERDTree is open
+    autocmd bufenter * if (
+        \winnr("$") == 1 &&
+        \exists("b:NERDTree") &&
+        \b:NERDTree.isTabTree()
+        \) | q | endif
+
+    " Open NERDTree at startup
+    autocmd vimenter * NERDTree
+augroup END
 
 " Files to hide in NERDTree
 let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$', '__pycache__']
@@ -253,16 +261,16 @@ call NERDTreeHighlightFile('html', 'magenta')
 
 " Prefixes for files with different git status
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "*",
-    \ "Staged"    : "+",
-    \ "Untracked" : "_",
-    \ "Renamed"   : "%",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "x",
-    \ "Dirty"     : "@",
-    \ "Clean"     : "C",
-    \ 'Ignored'   : "I",
-    \ "Unknown"   : "?"}
+    \ 'Modified'  : '*',
+    \ 'Staged'    : '+',
+    \ 'Untracked' : '_',
+    \ 'Renamed'   : '%',
+    \ 'Unmerged'  : '═',
+    \ 'Deleted'   : 'x',
+    \ 'Dirty'     : '@',
+    \ 'Clean'     : 'C',
+    \ 'Ignored'   : 'I',
+    \ 'Unknown'   : '?'}
 
 " === CSV.vim ===
 augroup filetypedetect
