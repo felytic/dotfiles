@@ -9,7 +9,7 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 }
 
-PS1="\[\e[35m\]\t \[\e[m\]\e[m\]\[\e[34m\]\u\[\e[m\]\[\e[m\]\[\e[1;34m\]@\[\e[m\]\[\e[m\]\[\e[32m\]\h \[\e[m\]\[\e[31m\]\$(parse_git_branch) \[\e[m\]\[\e[33m\]\w \[\e[m\] "
+PS1="\[\e[35m\]\t \[\e[m\]\e[m\]\[\e[34m\]\u\[\e[m\]\[\e[m\]\[\e[1;34m\]@\[\e[m\]\[\e[m\]\[\e[32m\]\h \[\e[m\]\[\e[31m\]\$(parse_git_branch) \[\e[m\]\[\e[33m\]\w \[\e[m\]"
 
 
 # Up/down arrow key searches through input command

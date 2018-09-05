@@ -14,6 +14,8 @@ set softtabstop=2  " Or 2 if neseesary
 set shiftwidth=4  " Number of spaces inserted on TAB press
 set expandtab  " Insert spaces instead of tabs
 
+set incsearch  " Show search matches as you type
+set hlsearch  " Highlight all search matches
 set ignorecase  " Use case insensitive search
 set smartcase  " Except when using capital letters
 
@@ -21,9 +23,6 @@ set encoding=utf-8  " Default encoding is UTF-8
 scriptencoding utf-8
 
 set colorcolumn=80  " Highlight 80th column
-
-set incsearch  " Move the cursor to the matched string, while typing search
-set hlsearch  " Highlight all search matches
 
 set splitbelow  " Vertical split splits below the current buffer
 set splitright  " Horizontalsplit splits at the right of the current buffer
@@ -39,7 +38,17 @@ set diffopt+=vertical  " Use vertical split for diffs
 
 setlocal spell spelllang=en_us  " Set default language for spellchecking
 
+set list  " Show unprintable chars
+set listchars=tab:>-,trail:•,extends:#,nbsp:•  " List of chars to show
 
+set history=100  "Remember 100 last commands
+set undolevels=100  " Use more levels of undo
+
+set nofoldenable  "Don't fold by default
+set foldmethod=indent  " Fold based on indentation
+set foldnestmax=5  " Maximum fold level
+
+set scrolloff=4  "Keep 4 lines above and below while scrolling
 " =================================== KEYS ===================================
 
 " Split navigations
@@ -126,9 +135,6 @@ call vundle#begin()
   " Jedi autocompletion library for Python
   Plugin 'davidhalter/jedi-vim'
 
-  " No-BS Python code folding
-  Plugin 'tmhedberg/SimpylFold'
-
   " === UI ===
 
   " Retro groove color scheme
@@ -170,10 +176,6 @@ colorscheme gruvbox
 " === Airline ===
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
-
-
-" === SimplyFold ===
-let g:SimpylFold_docstring_preview=1
 
 
 " === Ale ===
@@ -238,7 +240,8 @@ augroup vimrc
 augroup END
 
 " Files to hide in NERDTree
-let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$', '__pycache__']
+let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$',
+                     \'\.o$', '__pycache__']
 
 
 " Higlight NERDTree's filetypes with given color
@@ -269,7 +272,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Deleted'   : 'x',
     \ 'Dirty'     : '@',
     \ 'Clean'     : 'C',
-    \ 'Ignored'   : 'I',
+    \ 'Ignored'   : '•',
     \ 'Unknown'   : '?'}
 
 " === CSV.vim ===
