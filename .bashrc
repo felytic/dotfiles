@@ -9,6 +9,8 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 }
 
+# Make prompt looks like
+# 12:24:27 user@host  git-branch ~/location
 PS1="\[\e[35m\]\t \[\e[m\]\e[m\]\[\e[34m\]\u\[\e[m\]\[\e[m\]\[\e[1;34m\]@\[\e[m\]\[\e[m\]\[\e[32m\]\h \[\e[m\]\[\e[31m\]\$(parse_git_branch) \[\e[m\]\[\e[33m\]\w \[\e[m\]"
 
 

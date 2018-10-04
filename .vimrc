@@ -70,6 +70,18 @@ nnoremap <F12> :vsplit ~/.vimrc <CR>
 " Insert python breakpoint
 map <F9> oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+
 
 " ================================== PLUGINS =================================
 set runtimepath+=~/.vim/bundle/Vundle.vim
@@ -183,7 +195,6 @@ map <C-f> :ALEFix <CR>
 
 let g:ale_list_window_size = 5
 let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
@@ -214,6 +225,21 @@ nnoremap U :GitGutterUndoHunk <CR>
 
 " === FZF ===
 map <F5> :Ag <CR>
+
+" Save search results to quickfix list
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 
 " === NERDTree ===
