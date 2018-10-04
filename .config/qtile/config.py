@@ -51,6 +51,9 @@ keys = [
     Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer set Master 5%+')),
     Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer set Master 5%-')),
 
+    Key([], 'XF86KbdBrightnessDown', lazy.spawn('asus-kbd-backlight down')),
+    Key([], 'XF86KbdBrightnessUp', lazy.spawn('asus-kbd-backlight up')),
+
     # Brightness control
     Key([WIN], 'Right', lazy.spawn('xbacklight -inc 10')),
     Key([WIN], 'Left', lazy.spawn('xbacklight -dec 10')),
@@ -58,6 +61,7 @@ keys = [
     # Applications hotkeys
     Key([WIN], RETURN, lazy.spawn('urxvt')),
     Key([WIN], 'g', lazy.spawn('google-chrome-stable')),
+    Key([WIN], 'f', lazy.spawn('firefox')),
     Key([WIN], 'e', lazy.spawn('emacs')),
 
     # Lock screen
@@ -123,6 +127,8 @@ screens = [
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Systray(),
+                widget.Sep(),
+                widget.Battery(update_delay=5),
                 widget.Sep(),
                 widget.Volume(),
                 widget.Sep(),

@@ -1,1 +1,1 @@
-vundle google-chrome powerline-fonts-git 
+google-chrome powerline-fonts-git asus-kbd-backlight
