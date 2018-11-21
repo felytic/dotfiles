@@ -117,6 +117,9 @@ call vundle#begin()
   " Working with CSV files
   Plugin 'chrisbra/csv.vim'
 
+  " JSON plugin
+  Plugin 'elzr/vim-json'
+
   " === Extra buffers ===
 
   " A tree file system explorer
@@ -147,7 +150,13 @@ call vundle#begin()
   " Jedi autocompletion library for Python
   Plugin 'davidhalter/jedi-vim'
 
+  " Python docstring generator
+  Plugin 'heavenshell/vim-pydocstring'
+
   " === UI ===
+
+  " No-BS Python code folding
+  Plugin 'tmhedberg/SimpylFold'
 
   " Retro groove color scheme
   Plugin 'morhetz/gruvbox'
@@ -305,3 +314,10 @@ let g:NERDTreeIndicatorMapCustom = {
 augroup filetypedetect
   au! BufRead,BufNewFile *.csv,*.dat,*.CSV	setfiletype csv
 augroup END
+
+let g:vim_json_syntax_conceal = 0
+
+let g:SimpylFold_docstring_preview = 1
+
+" === PyDocstring ===
+nmap <silent> <C-d> <Plug>(pydocstring)
