@@ -1,4 +1,6 @@
-from libqtile.config import Key, Screen, Group, Drag, Click
+import multiprocessing
+
+from libqtile.config import Key, Screen, Group, Drag
 from libqtile.command import lazy
 from libqtile import layout, bar, widget
 
@@ -132,24 +134,37 @@ screens = [
                 widget.Sep(),
                 widget.Volume(),
                 widget.Sep(),
-                widget.Memory(update_interval=1),
-                widget.MemoryGraph(
-                    line_width=1,
-                    margin_x=0,
-                    margin_y=1,
-                    border_width=0
-                ),
-                widget.Sep(),
-                widget.CPUGraph(
+                widget.NetGraph(
+                    interface='wlp2s0',
                     line_width=1,
                     margin_x=0,
                     margin_y=1,
                     border_width=0,
                     type='line',
-                    graph_color='db3615',
-                    core=0
+                    graph_color='98971a',
                 ),
                 widget.Sep(),
+                widget.Memory(update_interval=1),
+                widget.MemoryGraph(
+                    line_width=1,
+                    margin_x=0,
+                    margin_y=1,
+                    border_width=0,
+                    graph_color='458588',
+                ),
+                *(
+                    widget.CPUGraph(
+                        border_color='999999',
+                        line_width=1,
+                        margin_x=0,
+                        margin_y=-1,
+                        border_width=1,
+                        type='line',
+                        graph_color='cc' + str(x) + '41d',
+                        width=50,
+                        core=x
+                    ) for x in range(multiprocessing.cpu_count())
+                ),
                 widget.Clock(format=' %Y-%m-%d %a %H:%M:%S'),
             ],
             22,  # bar height
