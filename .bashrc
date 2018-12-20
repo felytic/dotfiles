@@ -32,7 +32,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias v='vim'
+alias v='nvim'
 alias g='git'
 alias r='ranger'
 alias e='emacs'
