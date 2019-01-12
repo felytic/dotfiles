@@ -59,6 +59,8 @@ keys = [
     # Brightness control
     Key([WIN], 'Right', lazy.spawn('xbacklight -inc 10')),
     Key([WIN], 'Left', lazy.spawn('xbacklight -dec 10')),
+    Key([WIN, CTRL], 'Right', lazy.spawn('xbacklight -inc 1')),
+    Key([WIN, CTRL], 'Left', lazy.spawn('xbacklight -dec 1')),
 
     # Applications hotkeys
     Key([WIN], RETURN, lazy.spawn('urxvt')),
