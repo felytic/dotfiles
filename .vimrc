@@ -197,6 +197,13 @@ colorscheme gruvbox
 " === Airline ===
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+
+function! AirlineInit()
+    let g:airline_section_a = airline#section#create_left(['branch'])
+    let g:airline_section_b = airline#section#create_left(['hunks'])
+endfunction
+autocmd VimEnter * call AirlineInit()
 
 
 " === Ale ===
