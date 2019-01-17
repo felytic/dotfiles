@@ -1,16 +1,17 @@
-" ================================== GENERAL ================================= 
+" ================================== GENERAL =================================
 
 filetype off  " Nessesary for plugins loadins, set on below
 
 set nocompatible  " Don't be compatible with VI
 
 set wildmenu  " Better command-line completion
+set lazyredraw  " Redraw only when we need to
 
 set relativenumber  " Enable relative line numbers
 set number  " Display current line number
 
-set tabstop=4  " One tab equal 4 spaces
-set softtabstop=2  " Or 2 if neseesary
+set tabstop=4  " Number of visual spaces per TAB
+set softtabstop=4   " Number of spaces in tab when editing
 set shiftwidth=4  " Number of spaces inserted on TAB press
 set expandtab  " Insert spaces instead of tabs
 
@@ -23,6 +24,7 @@ set encoding=utf-8  " Default encoding is UTF-8
 scriptencoding utf-8
 
 set colorcolumn=80  " Highlight 80th column
+set cursorline  " Highlight current line
 
 set splitbelow  " Vertical split splits below the current buffer
 set splitright  " Horizontalsplit splits at the right of the current buffer
@@ -147,8 +149,8 @@ call vundle#begin()
   " Better Python indentation
   Plugin 'vim-scripts/indentpython.vim'
 
-  " Jedi autocompletion library for Python
-  Plugin 'davidhalter/jedi-vim'
+  " Autocolmpletion
+  Plugin 'Valloric/YouCompleteMe'
 
   " Python docstring generator
   Plugin 'heavenshell/vim-pydocstring'
@@ -210,13 +212,13 @@ autocmd VimEnter * call AirlineInit()
 map <C-f> :ALEFix <CR>
 
 let g:ale_list_window_size = 5
-let g:ale_set_loclist = 0
 let g:ale_open_list = 1
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_text_changed = 'never'
 
 let g:ale_linters = {'python': ['flake8', 'pyflakes']}
 let g:ale_fixers = {
@@ -328,3 +330,8 @@ let g:SimpylFold_docstring_preview = 1
 
 " === PyDocstring ===
 nmap <silent> <C-d> <Plug>(pydocstring)
+
+" === YouCompleteMe ===
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>r :YcmCompleter GoToReferences<CR>
+
