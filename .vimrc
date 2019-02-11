@@ -209,7 +209,10 @@ let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
 function! AirlineInit()
     let g:airline_section_a = airline#section#create_left(['branch'])
-    let g:airline_section_b = airline#section#create_left(['hunks'])
+    let g:airline_section_b = airline#section#create_left(['file'])
+    let g:airline_section_c = airline#section#create_left(['tagbar'])
+    let g:airline_section_x = airline#section#create_left(['readonly'])
+    let g:airline_section_z = airline#section#create_right(['%l/%L'])
 endfunction
 autocmd VimEnter * call AirlineInit()
 
@@ -229,7 +232,7 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {'python': ['flake8', 'pyflakes']}
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'python': ['autopep8', 'yapf']
+  \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace']
   \}
 
 
