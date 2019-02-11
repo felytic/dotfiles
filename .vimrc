@@ -72,18 +72,24 @@ nnoremap <F12> :vsplit ~/.vimrc <CR>
 " Insert python breakpoint
 map <F9> oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
 
-" " Copy to clipboard
+" Copy to clipboard
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
 nnoremap  <leader>yy  "+yy
 
-" " Paste from clipboard
+" Paste from clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
 
+" Use kj or jk for exit Insert mode, also move cursor rigth
+inoremap jk <Esc>
+inoremap kj <Esc>
+
+" Use double space for save
+nnoremap <leader><leader> :w <CR>
 
 " ================================== PLUGINS =================================
 set runtimepath+=~/.vim/bundle/Vundle.vim
