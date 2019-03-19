@@ -65,8 +65,6 @@ keys = [
     # Applications hotkeys
     Key([WIN], RETURN, lazy.spawn('urxvt')),
     Key([WIN], 'g', lazy.spawn('google-chrome-stable')),
-    Key([WIN], 'f', lazy.spawn('firefox')),
-    Key([WIN], 'e', lazy.spawn('emacs')),
 
     # Lock screen
     Key([], 'F10', lazy.spawn('slock')),

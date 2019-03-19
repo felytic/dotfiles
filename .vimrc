@@ -152,9 +152,6 @@ call vundle#begin()
 
   " === Python ===
 
-  " Better Python indentation
-  Plugin 'vim-scripts/indentpython.vim'
-
   " Autocolmpletion
   Plugin 'Valloric/YouCompleteMe'
 
@@ -162,9 +159,6 @@ call vundle#begin()
   Plugin 'heavenshell/vim-pydocstring'
 
   " === UI ===
-
-  " No-BS Python code folding
-  Plugin 'tmhedberg/SimpylFold'
 
   " Retro groove color scheme
   Plugin 'morhetz/gruvbox'
@@ -276,10 +270,6 @@ let NERDTreeMapJumpParent='h'
 let NERDTreeMapOpenSplit='<S-TAB>'
 let NERDTreeMapOpenVSplit='<TAB>'
 
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-
-
 augroup vimrc
     " Close vim when only NERDTree is open
     autocmd bufenter * if (
@@ -335,12 +325,10 @@ augroup END
 
 let g:vim_json_syntax_conceal = 0
 
-let g:SimpylFold_docstring_preview = 1
-
 " === PyDocstring ===
 nmap <silent> <C-d> <Plug>(pydocstring)
 
 " === YouCompleteMe ===
-nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
 nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
