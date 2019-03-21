@@ -144,9 +144,6 @@ call vundle#begin()
   " Shows a git diff in the gutter (sign column) and stages/undoes hunks
   Plugin 'airblade/vim-gitgutter'
 
-  " A git commit browser
-  Plugin 'junegunn/gv.vim'
-
   " A plugin of NERDTree showing git status
   Plugin 'Xuyuanp/nerdtree-git-plugin'
 
@@ -246,6 +243,8 @@ nnoremap U :GitGutterUndoHunk <CR>
 
 " === FZF ===
 map <F5> :Ag <CR>
+map <F6> :Files <CR>
+nnoremap <F7> :Ag <C-R><C-W><CR>
 
 " Save search results to quickfix list
 function! s:build_quickfix_list(lines)
