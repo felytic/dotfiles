@@ -108,7 +108,7 @@ call vundle#begin()
   Plugin 'tpope/vim-repeat'
 
   " Auto-completion for quotes, parens, brackets, etc.
-  Plugin 'Raimondi/delimitMate'
+  Plugin 'jiangmiao/auto-pairs'
 
   " Camelcase, undersore, acronym words motions
   Plugin 'chaoren/vim-wordmotion'
@@ -154,6 +154,12 @@ call vundle#begin()
 
   " Python docstring generator
   Plugin 'heavenshell/vim-pydocstring'
+
+  " Python indent
+  Plugin 'Vimjas/vim-python-pep8-indent'
+
+  " Enhanced syntax highlightitng
+  Plugin 'vim-python/python-syntax'
 
   " === UI ===
 
@@ -331,3 +337,4 @@ nmap <silent> <C-d> <Plug>(pydocstring)
 nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
 nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
+let g:python_highlight_all = 1
