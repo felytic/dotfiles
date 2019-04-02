@@ -128,6 +128,9 @@ call vundle#begin()
   " JSON plugin
   Plugin 'elzr/vim-json'
 
+  " Copy link to line in repo
+  Plugin 'vitapluvia/vim-gurl'
+
   " === Extra buffers ===
 
   " A tree file system explorer
@@ -338,3 +341,5 @@ nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
 nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
 let g:python_highlight_all = 1
+
+let g:vimgurl_yank_register = '+'
