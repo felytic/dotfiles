@@ -48,7 +48,7 @@ alias ln='ln -i'
 # Create parent directories on demand
 alias mkdir='mkdir -pv'
 
-alias py='python'
+alias py='bpython'
 
 # Activate/deactivate virtualenv on entering/leaving a dir
 function cd() {
@@ -69,3 +69,4 @@ function cd() {
       fi
   fi
 }
+export HISTCONTROL=ignoreboth:erasedups
