@@ -1,1 +1,1 @@
-alsa-utils ctags unzip grub git xorg-server xorg-xinit vlc slock vim cmake htop ranger python-pipenv zip dialog wpa_supplicant sudo wpa_actiond ttf-roboto vimiv xorg-xbacklight bash-completion ttf-dejavu artwiz-fonts redshift gimp bluez-utils jupyther-notebook
+alsa-utils ctags p7zip grub git xorg-server xorg-xinit vlc slock vim cmake htop ranger python-pipenv zip dialog wpa_supplicant sudo wpa_actiond ttf-roboto vimiv xorg-xbacklight bash-completion ttf-dejavu artwiz-fonts redshift gimp bluez-utils jupyter-notebook qtile neovim firefox ntp telegram-desktop xf86-video-intel

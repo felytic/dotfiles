@@ -1,1 +1,1 @@
-google-chrome powerline-fonts-git asus-kbd-backlight rxvt-unicode-pixbuf
+powerline-fonts-git asus-kbd-backlight rxvt-unicode-pixbuf
