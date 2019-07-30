@@ -23,7 +23,7 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
-setxkbmap -layout us,ua -variant -option grp:caps_toggle,grp_led:caps,terminate:ctrl_alt_bksp &
+setxkbmap -layout us,ua -variant -option grp:lctrl_toggle,grp_led:caps,ctrl:nocaps
 
 xss-lock -- slock &
 exec qtile
