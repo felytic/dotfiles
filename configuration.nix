@@ -73,6 +73,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "us,ua";
+  services.xserver.xkbVariant = "altgr-intl,";
 
   # Use same config for linux console
   i18n.consoleUseXkbConfig = true;
