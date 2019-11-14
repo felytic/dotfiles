@@ -70,7 +70,7 @@ let mapleader = ' '
 nnoremap <F12> :vsplit ~/.vimrc <CR>
 
 " Insert python breakpoint
-map <F9> oimport pdb; pdb.set_trace()  # BREAKPOINT<C-c>
+map <F9> obreakpoint()<C-c>
 
 " Copy to clipboard
 vnoremap  <leader>y  "+y
@@ -178,6 +178,9 @@ call vundle#begin()
   " Display the indention levels with thin vertical lines
   Plugin 'Yggdroot/indentLine'
 
+  " No-BS Python code folding
+  Plugin 'tmhedberg/SimpylFold'
+
 call vundle#end()
 
 " This two functions must be located after plugins loading
@@ -277,6 +280,7 @@ map <F2> :NERDTreeToggle<CR>
 let NERDTreeMapJumpParent='h'
 let NERDTreeMapOpenSplit='<S-TAB>'
 let NERDTreeMapOpenVSplit='<TAB>'
+let NERDTreeShowHidden=1
 
 augroup vimrc
     " Close vim when only NERDTree is open
@@ -292,7 +296,7 @@ augroup END
 
 " Files to hide in NERDTree
 let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$',
-                     \'\.o$', '__pycache__']
+                     \'\.o$', '__pycache__', '.git', 'venv', '.cache']
 
 
 " Higlight NERDTree's filetypes with given color
