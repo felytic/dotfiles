@@ -117,7 +117,7 @@ call vundle#begin()
   Plugin 'junegunn/fzf.vim'
 
   " Asynchronous linting/fixing
-  Plugin 'w0rp/ale'
+  Plugin 'dense-analysis/ale'
 
   " Perform all insert mode completions with Tab
   Plugin 'ervandew/supertab'
@@ -163,6 +163,9 @@ call vundle#begin()
 
   " Enhanced syntax highlightitng
   Plugin 'vim-python/python-syntax'
+
+  " Sort imports
+  Plugin 'fisadev/vim-isort'
 
   " === UI ===
 
@@ -232,7 +235,7 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_lint_on_text_changed = 'never'
 
-let g:ale_linters = {'python': ['flake8', 'pyflakes']}
+let g:ale_linters = {'python': ['flake8']}
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace']
@@ -255,7 +258,7 @@ nnoremap U :GitGutterUndoHunk <CR>
 
 " === FZF ===
 map <F5> :Ag <CR>
-map <F6> :Files <CR>
+map <F6> :GFiles <CR>
 nnoremap <F7> :Ag <C-R><C-W><CR>
 
 " Save search results to quickfix list
@@ -289,9 +292,6 @@ augroup vimrc
         \exists("b:NERDTree") &&
         \b:NERDTree.isTabTree()
         \) | q | endif
-
-    " Open NERDTree at startup
-    autocmd vimenter * NERDTree
 augroup END
 
 " Files to hide in NERDTree
@@ -347,3 +347,9 @@ nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 let g:python_highlight_all = 1
 
 let g:vimgurl_yank_register = '+'
+
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
