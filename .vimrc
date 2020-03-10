@@ -139,6 +139,9 @@ call vundle#begin()
   " Displays tags in a window, ordered by scope
   Plugin 'majutsushi/tagbar'
 
+  " Nginx syntax
+  Plugin 'chr4/nginx.vim'
+
   " === Git ===
 
   " A Git wrapper
@@ -235,11 +238,12 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_lint_on_text_changed = 'never'
 
-let g:ale_linters = {'python': ['flake8']}
+let g:ale_linters = {'python': ['flake8', 'vulture']}
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace']
   \}
+let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-confidence 100"
 
 
 " === Supertab ===
@@ -353,3 +357,6 @@ command! -bang -nargs=? -complete=dir GFiles
 
 
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
