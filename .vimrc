@@ -170,6 +170,13 @@ call vundle#begin()
   " Sort imports
   Plugin 'fisadev/vim-isort'
 
+  " === YAML ===
+  " YAML formatter
+  Plugin 'tarekbecker/vim-yaml-formatter'
+
+  " YAML folder
+  Plugin 'pedrohdz/vim-yaml-folds'
+
   " === UI ===
 
   " Retro groove color scheme
@@ -181,11 +188,13 @@ call vundle#begin()
   " Lean & mean status/tabline
   Plugin 'bling/vim-airline'
 
-  " Display the indention levels with thin vertical lines
-  Plugin 'Yggdroot/indentLine'
+  Plugin 'nathanaelkane/vim-indent-guides'
 
   " No-BS Python code folding
   Plugin 'tmhedberg/SimpylFold'
+
+  " A plugin to color colornames and codes
+  Plugin 'chrisbra/Colorizer'
 
 call vundle#end()
 
@@ -204,6 +213,14 @@ map <F4> :TagbarToggle<CR>
 
 let g:tagbar_autofocus = 0
 
+
+
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_start_level=2
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=236
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " === Gruvbox ===
 let g:gruvbox_contrast_dark='hard'
@@ -225,6 +242,8 @@ function! AirlineInit()
 endfunction
 autocmd VimEnter * call AirlineInit()
 
+
+let g:colorizer_auto_color = 1
 
 " === Ale ===
 map <C-f> :ALEFix <CR>
@@ -248,10 +267,6 @@ let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-con
 
 " === Supertab ===
 let g:SuperTabDefaultCompletionType = '<c-n>'
-
-
-" === IndentLine ===
-let g:indentLine_char = '│'
 
 
 " === GitGutter ===
@@ -360,3 +375,8 @@ command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <ba
 
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+autocmd FileType python map <buffer> <F8> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F8> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+
+au BufRead,BufNewFile *nginx* set filetype=nginx
