@@ -24,6 +24,7 @@
 	m = merge
 	f = fetch
 	fa = fetch --all
+    cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 
 [core]
   editor = vim
