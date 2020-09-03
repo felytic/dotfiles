@@ -1,18 +1,14 @@
 " ================================== GENERAL =================================
 
-filetype off  " Nessesary for plugins loadins, set on below
-
-set nocompatible  " Don't be compatible with VI
-
 set wildmenu  " Better command-line completion
 set lazyredraw  " Redraw only when we need to
 
 set relativenumber  " Enable relative line numbers
 set number  " Display current line number
 
-set tabstop=4  " Number of visual spaces per TAB
-set softtabstop=4   " Number of spaces in tab when editing
-set shiftwidth=4  " Number of spaces inserted on TAB press
+set tabstop=2  " Number of visual spaces per TAB
+set softtabstop=2   " Number of spaces in tab when editing
+set shiftwidth=2  " Number of spaces inserted on TAB press
 set expandtab  " Insert spaces instead of tabs
 
 set incsearch  " Show search matches as you type
@@ -51,6 +47,7 @@ set foldmethod=indent  " Fold based on indentation
 set foldnestmax=5  " Maximum fold level
 
 set scrolloff=4  "Keep 4 lines above and below while scrolling
+
 " =================================== KEYS ===================================
 
 " Split navigations
@@ -92,117 +89,117 @@ inoremap kj <Esc>
 nnoremap <leader><leader> :w <CR>
 
 " ================================== PLUGINS =================================
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-  " Vundle, the plug-in manager
-  Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
   " Commnet/uncomment the code
-  Plugin 'tpope/vim-commentary'
+  Plug 'tpope/vim-commentary'
 
   " Quoting/parenthesizing made simple
-  Plugin 'tpope/vim-surround'
+  Plug'tpope/vim-surround'
 
   " Enable repeating supported plugin maps with '.'
-  Plugin 'tpope/vim-repeat'
+  Plug 'tpope/vim-repeat'
 
   " Auto-completion for quotes, parens, brackets, etc.
-  Plugin 'jiangmiao/auto-pairs'
+  Plug 'jiangmiao/auto-pairs'
 
   " Camelcase, undersore, acronym words motions
-  Plugin 'chaoren/vim-wordmotion'
+  Plug 'chaoren/vim-wordmotion'
 
   " Fuzzy funder
-  Plugin 'junegunn/fzf.vim'
+  Plug 'junegunn/fzf.vim'
 
   " Asynchronous linting/fixing
-  Plugin 'dense-analysis/ale'
+  Plug 'dense-analysis/ale'
 
-  " Perform all insert mode completions with Tab
-  Plugin 'ervandew/supertab'
+  " " Perform all insert mode completions with Tab
+  Plug 'ervandew/supertab'
 
   " Working with CSV files
-  Plugin 'chrisbra/csv.vim'
+  Plug 'chrisbra/csv.vim'
 
-  " JSON plugin
-  Plugin 'elzr/vim-json'
+  " " JSON plugin
+  " Plug 'elzr/vim-json'
 
   " Copy link to line in repo
-  Plugin 'vitapluvia/vim-gurl'
+  Plug 'vitapluvia/vim-gurl'
 
   " === Extra buffers ===
 
   " A tree file system explorer
-  Plugin 'scrooloose/nerdtree'
+  Plug 'scrooloose/nerdtree'
 
   " Displays tags in a window, ordered by scope
-  Plugin 'majutsushi/tagbar'
+  Plug 'majutsushi/tagbar'
 
   " Nginx syntax
-  Plugin 'chr4/nginx.vim'
+  Plug 'chr4/nginx.vim'
 
   " === Git ===
 
   " A Git wrapper
-  Plugin 'tpope/vim-fugitive'
+  Plug 'tpope/vim-fugitive'
 
   " Shows a git diff in the gutter (sign column) and stages/undoes hunks
-  Plugin 'airblade/vim-gitgutter'
+  Plug 'airblade/vim-gitgutter'
 
   " A plugin of NERDTree showing git status
-  Plugin 'Xuyuanp/nerdtree-git-plugin'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+
+  " Autocompletion
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+  " " === JavaScript
+  Plug 'yuezk/vim-js'
 
   " === Python ===
-
-  " Autocolmpletion
-  Plugin 'Valloric/YouCompleteMe'
+  " Autocompletion
+  Plug 'deoplete-plugins/deoplete-jedi'
+  Plug 'davidhalter/jedi-vim'
 
   " Python docstring generator
-  Plugin 'heavenshell/vim-pydocstring'
+  Plug 'heavenshell/vim-pydocstring'
 
   " Python indent
-  Plugin 'Vimjas/vim-python-pep8-indent'
+  " Plug 'Vimjas/vim-python-pep8-indent'
 
   " Enhanced syntax highlightitng
-  Plugin 'vim-python/python-syntax'
+  Plug 'vim-python/python-syntax'
 
   " Sort imports
-  Plugin 'fisadev/vim-isort'
+  Plug 'tweekmonster/impsort.vim'
 
   " === YAML ===
   " YAML formatter
-  Plugin 'tarekbecker/vim-yaml-formatter'
+  Plug 'tarekbecker/vim-yaml-formatter'
 
   " YAML folder
-  Plugin 'pedrohdz/vim-yaml-folds'
+  Plug 'pedrohdz/vim-yaml-folds'
 
   " === UI ===
 
   " Retro groove color scheme
-  Plugin 'morhetz/gruvbox'
+  Plug 'morhetz/gruvbox'
 
   " Rainbow delimiters
-  Plugin 'luochen1990/rainbow'
+  Plug 'luochen1990/rainbow'
 
   " Lean & mean status/tabline
-  Plugin 'bling/vim-airline'
+  Plug 'bling/vim-airline'
 
-  Plugin 'nathanaelkane/vim-indent-guides'
+  " Visually displaying indent levels
+  Plug 'nathanaelkane/vim-indent-guides'
 
   " No-BS Python code folding
-  Plugin 'tmhedberg/SimpylFold'
+  Plug 'tmhedberg/SimpylFold'
 
   " A plugin to color colornames and codes
-  Plugin 'chrisbra/Colorizer'
+  Plug 'chrisbra/Colorizer'
 
-call vundle#end()
-
-" This two functions must be located after plugins loading
-filetype plugin indent on " Determine the file type by its name and contents.
-syntax on  " Enable syntax highlighting
+call plug#end()
 
 " =============================== PLUGINS SETUP ==============================
+
 
 " === Rainbow ===
 let g:rainbow_active = 1
@@ -210,11 +207,10 @@ let g:rainbow_active = 1
 
 " === Tagbar ===
 map <F4> :TagbarToggle<CR>
-
 let g:tagbar_autofocus = 0
 
 
-
+" === Indent lines ===
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_guide_size=1
 let g:indent_guides_start_level=2
@@ -222,9 +218,9 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=236
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
+
 " === Gruvbox ===
 let g:gruvbox_contrast_dark='hard'
-
 colorscheme gruvbox
 
 
@@ -240,14 +236,16 @@ function! AirlineInit()
     let g:airline_section_x = airline#section#create_left(['readonly'])
     let g:airline_section_z = airline#section#create_right(['%l/%L'])
 endfunction
+
 autocmd VimEnter * call AirlineInit()
 
 
+" === Colorizer ===
 let g:colorizer_auto_color = 1
+
 
 " === Ale ===
 map <C-f> :ALEFix <CR>
-
 let g:ale_list_window_size = 5
 let g:ale_open_list = 1
 let g:ale_sign_error = '•'
@@ -256,17 +254,24 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_lint_on_text_changed = 'never'
-
-let g:ale_linters = {'python': ['flake8', 'vulture']}
-let g:ale_fixers = {
-  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace']
-  \}
 let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-confidence 100"
+let g:ale_linters = {
+\ 'python': ['flake8', 'vulture'],
+\ 'javascript': ['eslint'],
+\}
+let g:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace'],
+\ 'javascript': ['eslint']
+\}
 
 
 " === Supertab ===
 let g:SuperTabDefaultCompletionType = '<c-n>'
+
+
+" === Deoplete ===
+let g:deoplete#enable_at_startup = 1
 
 
 " === GitGutter ===
@@ -288,12 +293,13 @@ function! s:build_quickfix_list(lines)
 endfunction
 
 let g:fzf_action = {
-  \ 'ctrl-q': function('s:build_quickfix_list'),
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+\ 'ctrl-q': function('s:build_quickfix_list'),
+\ 'ctrl-t': 'tab split',
+\ 'ctrl-x': 'split',
+\ 'ctrl-v': 'vsplit'
+\}
 
-let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+" let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 
 " === NERDTree ===
@@ -317,7 +323,6 @@ augroup END
 let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$',
                      \'\.o$', '__pycache__', '.git', 'venv', '.cache']
 
-
 " Higlight NERDTree's filetypes with given color
 function! NERDTreeHighlightFile(ext, color)
   exec 'autocmd filetype nerdtree highlight ' . a:ext.' ctermfg='. a:color
@@ -335,9 +340,8 @@ call NERDTreeHighlightFile('html', 'magenta')
 
 
 " === NERDTree Git Plugin ===
-
 " Prefixes for files with different git status
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ 'Modified'  : '*',
     \ 'Staged'    : '+',
     \ 'Untracked' : '_',
@@ -359,24 +363,9 @@ let g:vim_json_syntax_conceal = 0
 " === PyDocstring ===
 nmap <silent> <C-d> <Plug>(pydocstring)
 
-" === YouCompleteMe ===
-nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
-nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
-let g:python_highlight_all = 1
-
-let g:vimgurl_yank_register = '+'
-
-command! -bang -nargs=? -complete=dir GFiles
-    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-autocmd FileType python map <buffer> <F8> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <F8> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-
-au BufRead,BufNewFile *nginx* set filetype=nginx
+" === COC ===
+let g:coc_global_extensions = ['coc-python', 'coc-json', 'coc-tsserver']
+nmap <silent> <leader>g <Plug>(coc-definition)
+nmap <silent> <leader>u <Plug>(coc-references)
+nmap <leader> <leader>r <Plug>(coc-rename)
