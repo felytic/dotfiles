@@ -6,9 +6,9 @@ set lazyredraw  " Redraw only when we need to
 set relativenumber  " Enable relative line numbers
 set number  " Display current line number
 
-set tabstop=2  " Number of visual spaces per TAB
-set softtabstop=2   " Number of spaces in tab when editing
-set shiftwidth=2  " Number of spaces inserted on TAB press
+set tabstop=4  " Number of visual spaces per TAB
+set softtabstop=4   " Number of spaces in tab when editing
+set shiftwidth=4  " Number of spaces inserted on TAB press
 set expandtab  " Insert spaces instead of tabs
 
 set incsearch  " Show search matches as you type
@@ -48,6 +48,18 @@ set foldnestmax=5  " Maximum fold level
 
 set scrolloff=4  "Keep 4 lines above and below while scrolling
 
+" ============================== ABBREVIATIONS ===============================
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
+
 " =================================== KEYS ===================================
 
 " Split navigations
@@ -65,6 +77,11 @@ let mapleader = ' '
 
 " Open this file on F12
 nnoremap <F12> :vsplit ~/.vimrc <CR>
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Insert python breakpoint
 map <F9> obreakpoint()<C-c>
@@ -112,17 +129,21 @@ call plug#begin('~/.vim/plugged')
   " Asynchronous linting/fixing
   Plug 'dense-analysis/ale'
 
-  " " Perform all insert mode completions with Tab
+  " Perform all insert mode completions with Tab
   Plug 'ervandew/supertab'
 
   " Working with CSV files
   Plug 'chrisbra/csv.vim'
 
   " " JSON plugin
-  " Plug 'elzr/vim-json'
+  Plug 'elzr/vim-json'
 
   " Copy link to line in repo
   Plug 'vitapluvia/vim-gurl'
+
+  "" Snippets
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
 
   " === Extra buffers ===
 
@@ -146,16 +167,13 @@ call plug#begin('~/.vim/plugged')
   " A plugin of NERDTree showing git status
   Plug 'Xuyuanp/nerdtree-git-plugin'
 
-  " Autocompletion
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
   " " === JavaScript
   Plug 'yuezk/vim-js'
 
   " === Python ===
   " Autocompletion
-  Plug 'deoplete-plugins/deoplete-jedi'
-  Plug 'davidhalter/jedi-vim'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'davidhalter/jedi'
 
   " Python docstring generator
   Plug 'heavenshell/vim-pydocstring'
@@ -164,10 +182,22 @@ call plug#begin('~/.vim/plugged')
   " Plug 'Vimjas/vim-python-pep8-indent'
 
   " Enhanced syntax highlightitng
-  Plug 'vim-python/python-syntax'
+  Plug 'sheerun/vim-polyglot'
 
   " Sort imports
   Plug 'tweekmonster/impsort.vim'
+
+  " Syntax highlight for requerements.txt
+  Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+
+  " Multi-language debugger
+  " Plug 'puremourning/vimspector'
+
+  " Golang
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+  " Autogenerate tests for Go
+  Plug 'buoto/gotests-vim'
 
   " === YAML ===
   " YAML formatter
@@ -226,8 +256,11 @@ colorscheme gruvbox
 
 " === Airline ===
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#ale#enabled = 1
+let g:airline_skip_empty_sections = 1
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+let g:airline#extensions#virtualenv#enabled = 1
 
 function! AirlineInit()
     let g:airline_section_a = airline#section#create_left(['branch'])
@@ -270,9 +303,6 @@ let g:ale_fixers = {
 let g:SuperTabDefaultCompletionType = '<c-n>'
 
 
-" === Deoplete ===
-let g:deoplete#enable_at_startup = 1
-
 
 " === GitGutter ===
 nnoremap <C-p> :GitGutterPrevHunk<CR>
@@ -296,10 +326,9 @@ let g:fzf_action = {
 \ 'ctrl-q': function('s:build_quickfix_list'),
 \ 'ctrl-t': 'tab split',
 \ 'ctrl-x': 'split',
-\ 'ctrl-v': 'vsplit'
+\ 'ctrl-v': 'vsplit',
+\ 'ctrl-a': 'select-all'
 \}
-
-" let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 
 " === NERDTree ===
@@ -364,8 +393,24 @@ let g:vim_json_syntax_conceal = 0
 nmap <silent> <C-d> <Plug>(pydocstring)
 
 
-" === COC ===
-let g:coc_global_extensions = ['coc-python', 'coc-json', 'coc-tsserver']
-nmap <silent> <leader>g <Plug>(coc-definition)
-nmap <silent> <leader>u <Plug>(coc-references)
-nmap <leader> <leader>r <Plug>(coc-rename)
+" === YouCompleteMe ===
+nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
+nnoremap <leader>r :YcmCompleter GoToReferences<CR>
+
+let g:python_highlight_all = 1
+
+let g:vimgurl_yank_register = '+'
+
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+au BufRead,BufNewFile *nginx* set filetype=nginx
+
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:gotests_bin = '/home/felytic/go/bin/gotests'
