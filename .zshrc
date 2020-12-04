@@ -74,10 +74,11 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
-alias py='bpython'
+alias py='ptpython'
 
 autoload -Uz promptinit
 promptinit
 
 # Set breakpoint() in Python to call pudb
 export PYTHONBREAKPOINT="pudb.set_trace"
+export VIRTUAL_ENV_DISABLE_PROMPT=1

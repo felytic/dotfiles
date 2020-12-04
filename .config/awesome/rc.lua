@@ -211,6 +211,7 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
             wibox.container.margin(mytextclock, 7, 7, 0, 0),
             -- mytextclock,
+            require("battery-widget") {},
             cpu_widget({
                 width = 70,
                 step_width = 1,
