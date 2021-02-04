@@ -6,9 +6,9 @@ set lazyredraw  " Redraw only when we need to
 set relativenumber  " Enable relative line numbers
 set number  " Display current line number
 
-set tabstop=4  " Number of visual spaces per TAB
-set softtabstop=4   " Number of spaces in tab when editing
-set shiftwidth=4  " Number of spaces inserted on TAB press
+set tabstop=2  " Number of visual spaces per TAB
+set softtabstop=2   " Number of spaces in tab when editing
+set shiftwidth=2  " Number of spaces inserted on TAB press
 set expandtab  " Insert spaces instead of tabs
 
 set incsearch  " Show search matches as you type
@@ -49,16 +49,13 @@ set foldnestmax=5  " Maximum fold level
 set scrolloff=4  "Keep 4 lines above and below while scrolling
 
 " ============================== ABBREVIATIONS ===============================
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
+cnoreabbrev Qa qa
+cnoreabbrev QA qa
 cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
 cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
+cnoreabbrev Wqa wqa
+cnoreabbrev WQa wqa
+cnoreabbrev WQA wqa
 
 " =================================== KEYS ===================================
 
@@ -67,6 +64,14 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Change buffer width
+nnoremap <Esc>> :vertical res +1<Enter>
+nnoremap <Esc>< :vertical res -1<Enter>
+
+" Change buffer height
+nnoremap <Esc>+ :res +1<Enter>
+nnoremap <Esc>- :res -1<Enter>
 
 " Use H and L to move at the beggining and at the end of the line
 nnoremap L $
@@ -127,7 +132,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
 
   " Asynchronous linting/fixing
-  Plug 'dense-analysis/ale'
+  " Plug 'dense-analysis/ale'
 
   " Perform all insert mode completions with Tab
   Plug 'ervandew/supertab'
@@ -135,17 +140,11 @@ call plug#begin('~/.vim/plugged')
   " Working with CSV files
   Plug 'chrisbra/csv.vim'
 
-  " " JSON plugin
-  Plug 'elzr/vim-json'
-
   " Copy link to line in repo
   Plug 'vitapluvia/vim-gurl'
 
-  "" Snippets
-  Plug 'SirVer/ultisnips'
-  Plug 'honza/vim-snippets'
-
-  " === Extra buffers ===
+  " Generate UUID
+  Plug 'kburdett/vim-nuuid'
 
   " A tree file system explorer
   Plug 'scrooloose/nerdtree'
@@ -167,19 +166,16 @@ call plug#begin('~/.vim/plugged')
   " A plugin of NERDTree showing git status
   Plug 'Xuyuanp/nerdtree-git-plugin'
 
-  " " === JavaScript
-  Plug 'yuezk/vim-js'
+  " Autocompletion
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " === Python ===
-  " Autocompletion
-  Plug 'Valloric/YouCompleteMe'
-  Plug 'davidhalter/jedi'
 
   " Python docstring generator
   Plug 'heavenshell/vim-pydocstring'
 
   " Python indent
-  " Plug 'Vimjas/vim-python-pep8-indent'
+  Plug 'Vimjas/vim-python-pep8-indent'
 
   " Enhanced syntax highlightitng
   Plug 'sheerun/vim-polyglot'
@@ -187,17 +183,11 @@ call plug#begin('~/.vim/plugged')
   " Sort imports
   Plug 'tweekmonster/impsort.vim'
 
+  " No-BS Python code folding
+  Plug 'tmhedberg/SimpylFold'
+
   " Syntax highlight for requerements.txt
   Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
-  " Multi-language debugger
-  " Plug 'puremourning/vimspector'
-
-  " Golang
-  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-  " Autogenerate tests for Go
-  Plug 'buoto/gotests-vim'
 
   " === YAML ===
   " YAML formatter
@@ -220,8 +210,6 @@ call plug#begin('~/.vim/plugged')
   " Visually displaying indent levels
   Plug 'nathanaelkane/vim-indent-guides'
 
-  " No-BS Python code folding
-  Plug 'tmhedberg/SimpylFold'
 
   " A plugin to color colornames and codes
   Plug 'chrisbra/Colorizer'
@@ -250,7 +238,6 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 
 " === Gruvbox ===
-let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
 
@@ -278,25 +265,27 @@ let g:colorizer_auto_color = 1
 
 
 " === Ale ===
-map <C-f> :ALEFix <CR>
-let g:ale_list_window_size = 5
-let g:ale_open_list = 1
-let g:ale_sign_error = '•'
-let g:ale_sign_warning = '•'
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-confidence 100"
-let g:ale_linters = {
-\ 'python': ['flake8', 'vulture'],
-\ 'javascript': ['eslint'],
-\}
-let g:ale_fixers = {
-\ '*': ['remove_trailing_lines', 'trim_whitespace'],
-\ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace'],
-\ 'javascript': ['eslint']
-\}
+" map <C-f> :ALEFix <CR>
+" let g:ale_list_window_size = 5
+" let g:ale_open_list = 1
+" let g:ale_sign_error = '•'
+" let g:ale_sign_warning = '•'
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-confidence 100"
+" let g:ale_linters = {
+" \ 'python': ['flake8', 'vulture'],
+" \ 'typescript': ['tslint'],
+" \ 'javascript': ['tslint'],
+" \}
+" let g:ale_fixers = {
+" \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace'],
+" \ 'typesript': ['tslint'],
+" \ 'javascript': ['tslint'],
+" \}
 
 
 " === Supertab ===
@@ -352,6 +341,11 @@ augroup END
 let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$',
                      \'\.o$', '__pycache__', '.git', 'venv', '.cache']
 
+let NERDTreeHighlightCursorline = 0
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+
 " Higlight NERDTree's filetypes with given color
 function! NERDTreeHighlightFile(ext, color)
   exec 'autocmd filetype nerdtree highlight ' . a:ext.' ctermfg='. a:color
@@ -359,14 +353,28 @@ function! NERDTreeHighlightFile(ext, color)
 endfunction
 
 " Apply above function to all file types
-call NERDTreeHighlightFile('py', 'green')
-call NERDTreeHighlightFile('json', 'blue')
-call NERDTreeHighlightFile('js', 'yellow')
-call NERDTreeHighlightFile('log', 'gray')
-call NERDTreeHighlightFile('md', 'gray')
-call NERDTreeHighlightFile('conf', 'red')
-call NERDTreeHighlightFile('html', 'magenta')
-
+call NERDTreeHighlightFile('css', 5)
+call NERDTreeHighlightFile('csv', 8)
+call NERDTreeHighlightFile('geojson', 10)
+call NERDTreeHighlightFile('html', 166)
+call NERDTreeHighlightFile('ipynb', 12)
+call NERDTreeHighlightFile('js', 3)
+call NERDTreeHighlightFile('json', 2)
+call NERDTreeHighlightFile('less', 13)
+call NERDTreeHighlightFile('log', 7)
+call NERDTreeHighlightFile('md', 6)
+call NERDTreeHighlightFile('MD', 6)
+call NERDTreeHighlightFile('rst', 14)
+call NERDTreeHighlightFile('mjml', 208)
+call NERDTreeHighlightFile('mjs', 11)
+call NERDTreeHighlightFile('py', 4)
+call NERDTreeHighlightFile('scss', 13)
+call NERDTreeHighlightFile('sh', 1)
+call NERDTreeHighlightFile('sql', 9)
+call NERDTreeHighlightFile('ts', 11)
+call NERDTreeHighlightFile('xml', 15)
+call NERDTreeHighlightFile('yaml', 'magenta')
+call NERDTreeHighlightFile('yml', 'magenta')
 
 " === NERDTree Git Plugin ===
 " Prefixes for files with different git status
@@ -393,9 +401,24 @@ let g:vim_json_syntax_conceal = 0
 nmap <silent> <C-d> <Plug>(pydocstring)
 
 
-" === YouCompleteMe ===
-nnoremap <leader>g :rightbelow vertical YcmCompleter GoTo<CR>
-nnoremap <leader>r :YcmCompleter GoToReferences<CR>
+" === COC  ===
+let g:coc_global_extensions = [ 'coc-tsserver' ]
+
+" Remap keys for applying codeAction to the current line.
+nmap <leader>a  <Plug>(coc-codeaction)
+
+" Apply AutoFix to problem on the current line.
+nmap <leader>f  <Plug>(coc-fix-current)
+
+" Completion
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Prettify selected code.
+xmap <leader>p  <Plug>(coc-format-selected)
+nmap <leader>p  <Plug>(coc-format-selected)
 
 let g:python_highlight_all = 1
 
@@ -404,8 +427,7 @@ let g:vimgurl_yank_register = '+'
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, ' --ignore-dir={node_modules,fme,venv,jest_cache,logs} --ignore=package-lock.json', fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
