@@ -29,5 +29,5 @@ xrandr --auto --output HDMI-0 --left-of DVI-D-0 &
 
 xss-lock -- slock &
 udiskie -t &
-exec awesome
+exec i3
 
