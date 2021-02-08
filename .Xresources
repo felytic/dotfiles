@@ -8,7 +8,8 @@ urxvt.scrollTtyKeypress:  true
 urxvt.secondaryScroll:    true
 
 urxvt.iso14755: False
- 
+
+Xft.dpi: 220
 URxvt.perl-ext-common: selection-to-clipboard
 
 URxvt.font: xft:FuraCode Nerd Font Mono:size=12
