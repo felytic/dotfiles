@@ -1,1 +1,0 @@
-powerline-fonts-git asus-kbd-backlight rxvt-unicode-pixbuf
