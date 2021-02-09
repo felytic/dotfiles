@@ -402,7 +402,7 @@ nmap <silent> <C-d> <Plug>(pydocstring)
 
 
 " === COC  ===
-let g:coc_global_extensions = [ 'coc-tsserver' ]
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-python']
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>a  <Plug>(coc-codeaction)
