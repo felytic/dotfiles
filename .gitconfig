@@ -1,6 +1,6 @@
 [user]
-	email = felytic@gmail.com
-	name = felytic
+	email = 3834080+felytic@users.noreply.github.com
+	name = Serhii Hulko
 
 [color]
     ui = true
@@ -28,5 +28,9 @@
 
 [core]
   editor = vim
+
 [push]
 	default = current
+
+[commit]
+	gpgsign = true
