@@ -110,6 +110,9 @@ inoremap kj <Esc>
 " Use double space for save
 nnoremap <leader><leader> :w <CR>
 
+" This is important for COC and ALE work together
+let g:ale_disable_lsp = 1
+
 " ================================== PLUGINS =================================
 call plug#begin('~/.vim/plugged')
 
@@ -132,7 +135,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
 
   " Asynchronous linting/fixing
-  " Plug 'dense-analysis/ale'
+  Plug 'dense-analysis/ale'
 
   " Perform all insert mode completions with Tab
   Plug 'ervandew/supertab'
@@ -180,21 +183,11 @@ call plug#begin('~/.vim/plugged')
   " Enhanced syntax highlightitng
   Plug 'sheerun/vim-polyglot'
 
-  " Sort imports
-  Plug 'tweekmonster/impsort.vim'
-
   " No-BS Python code folding
   Plug 'tmhedberg/SimpylFold'
 
   " Syntax highlight for requerements.txt
   Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
-  " === YAML ===
-  " YAML formatter
-  Plug 'tarekbecker/vim-yaml-formatter'
-
-  " YAML folder
-  Plug 'pedrohdz/vim-yaml-folds'
 
   " === UI ===
 
@@ -209,7 +202,6 @@ call plug#begin('~/.vim/plugged')
 
   " Visually displaying indent levels
   Plug 'nathanaelkane/vim-indent-guides'
-
 
   " A plugin to color colornames and codes
   Plug 'chrisbra/Colorizer'
@@ -265,27 +257,30 @@ let g:colorizer_auto_color = 1
 
 
 " === Ale ===
-" map <C-f> :ALEFix <CR>
-" let g:ale_list_window_size = 5
-" let g:ale_open_list = 1
-" let g:ale_sign_error = '•'
-" let g:ale_sign_warning = '•'
-" let g:ale_echo_msg_error_str = 'E'
-" let g:ale_echo_msg_warning_str = 'W'
-" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_python_vulture_options = "--exclude venv/,tests/,migrations/ --min-confidence 100"
-" let g:ale_linters = {
-" \ 'python': ['flake8', 'vulture'],
-" \ 'typescript': ['tslint'],
-" \ 'javascript': ['tslint'],
-" \}
-" let g:ale_fixers = {
-" \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-" \ 'python': ['autopep8', 'yapf', 'remove_trailing_lines', 'trim_whitespace'],
-" \ 'typesript': ['tslint'],
-" \ 'javascript': ['tslint'],
-" \}
+map <C-f> :ALEFix <CR>
+let g:ale_list_window_size = 5
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_open_list = 1
+let g:ale_linters = {
+\ 'python': ['flake8', 'black', 'mypy'],
+\ 'typescript': ['tslint'],
+\ 'javascript': ['eslint'],
+\}
+let g:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ 'python': ['black', 'isort'],
+\ 'typesript': ['tslint'],
+\ 'yaml': ['yamlfix'],
+\ 'javascript': ['eslint'],
+\}
+
+nnoremap <C-]> :ALENext<CR>
+nnoremap <C-[> :ALEPrevious<CR>
 
 
 " === Supertab ===
@@ -322,6 +317,7 @@ let g:fzf_action = {
 
 " === NERDTree ===
 map <F2> :NERDTreeToggle<CR>
+nmap F :NERDTreeFind<CR>
 
 let NERDTreeMapJumpParent='h'
 let NERDTreeMapOpenSplit='<S-TAB>'
@@ -372,6 +368,7 @@ call NERDTreeHighlightFile('scss', 13)
 call NERDTreeHighlightFile('sh', 1)
 call NERDTreeHighlightFile('sql', 9)
 call NERDTreeHighlightFile('ts', 11)
+call NERDTreeHighlightFile('spec.ts', 8)
 call NERDTreeHighlightFile('xml', 15)
 call NERDTreeHighlightFile('yaml', 'magenta')
 call NERDTreeHighlightFile('yml', 'magenta')
@@ -402,7 +399,7 @@ nmap <silent> <C-d> <Plug>(pydocstring)
 
 
 " === COC  ===
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-python']
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pyright']
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>a  <Plug>(coc-codeaction)
@@ -433,6 +430,3 @@ autocmd! FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 au BufRead,BufNewFile *nginx* set filetype=nginx
-
-let g:vimspector_enable_mappings = 'HUMAN'
-let g:gotests_bin = '/home/felytic/go/bin/gotests'
