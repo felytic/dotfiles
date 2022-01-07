@@ -1,36 +1,38 @@
 [user]
-	email = 3834080+felytic@users.noreply.github.com
-	name = Serhii Hulko
+  email = 3834080+felytic@users.noreply.github.com
+  name = Serhii Hulko
 
 [color]
-    ui = true
+  ui = true
 
 [alias]
-	co = checkout
-	pl = pull
-	it = !git init && git commit -m \"root\" --allow-empty
-	lg = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(dim green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
-	b = branch -vv
-	p = push
-	pf = push --force
-	c = commit
-	ca = commit --amend
-	s = status -s -b
-	a = add
-	d = diff
-	rb = rebase
-	r  = reset
-	rh  = reset --hard
-	m = merge
-	f = fetch
-	fa = fetch --all
-    cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+  a = add
+  b = branch -vv
+  bl = blame
+  c = commit
+  ca = commit --amend
+  cl = clone
+  cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+  co = checkout
+  d = diff
+  f = fetch
+  fa = fetch --all
+  it = !git init && git commit -m \"root\" --allow-empty
+  lg = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(dim green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
+  m = merge
+  p = push
+  pf = push --force
+  pl = pull
+  r  = reset
+  rb = rebase
+  rh  = reset --hard
+  s = status -s -b
 
 [core]
   editor = vim
 
 [push]
-	default = current
+  default = current
 
 [commit]
-	gpgsign = true
+  gpgsign = true
