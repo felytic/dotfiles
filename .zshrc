@@ -6,10 +6,19 @@ SAVEHIST=10000
 # The following lines were added by compinstall
 zstyle :compinstall filename '~/.zshrc'
 
+fpath+=~/.zfunc
 autoload -Uz compinit
 compinit
 
 setopt PROMPT_SUBST
+
+# Don't save duplicates in zsh history
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
 
 # Up/down arrow key searches through input command
 bindkey "^[[A" history-beginning-search-backward
@@ -27,8 +36,8 @@ function cd() {
 
   if [[ -z "$VIRTUAL_ENV" ]] ; then
     ## If env folder is found then activate the vitualenv
-      if [[ -d ./venv ]] ; then
-        source ./venv/bin/activate
+      if [[ -d ./.venv ]] ; then
+        source ./.venv/bin/activate
       fi
   else
     ## check the current folder belong to earlier VIRTUAL_ENV folder
@@ -74,7 +83,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
-alias py='ptpython'
+alias py='python -m ptpython'
 
 autoload -Uz promptinit
 promptinit
