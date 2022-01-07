@@ -12,7 +12,8 @@ urxvt.iso14755: False
 Xft.dpi: 220
 URxvt.perl-ext-common: selection-to-clipboard
 
-URxvt.font: xft:FuraCode Nerd Font Mono:size=12
+URxvt.font: xft:Inconsolata Nerd Font Mono:size=12
+URxvt.lineSpace: 5
 URxvt.fading: 20
 
 *background: #1d2021
