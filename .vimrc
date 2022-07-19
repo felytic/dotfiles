@@ -19,8 +19,11 @@ set smartcase  " Except when using capital letters
 set encoding=utf-8  " Default encoding is UTF-8
 scriptencoding utf-8
 
-set colorcolumn=80  " Highlight 80th column
+autocmd bufenter set colorcolumn=0  " Don't show colorcolumn by default
+autocmd FileType python set colorcolumn=89  " Highlight 89th column for python files
+
 set cursorline  " Highlight current line
+set fillchars=vert:│,fold:-,eob:\ ,
 
 set splitbelow  " Vertical split splits below the current buffer
 set splitright  " Horizontalsplit splits at the right of the current buffer
@@ -47,6 +50,8 @@ set foldmethod=indent  " Fold based on indentation
 set foldnestmax=5  " Maximum fold level
 
 set scrolloff=4  "Keep 4 lines above and below while scrolling
+
+highlight NonText ctermfg=0
 
 " ============================== ABBREVIATIONS ===============================
 cnoreabbrev Qa qa
@@ -113,6 +118,9 @@ nnoremap <leader><leader> :w <CR>
 " This is important for COC and ALE work together
 let g:ale_disable_lsp = 1
 
+" Toggle folding by TAB
+map <TAB> za
+
 " ================================== PLUGINS =================================
 call plug#begin('~/.vim/plugged')
 
@@ -124,9 +132,6 @@ call plug#begin('~/.vim/plugged')
 
   " Enable repeating supported plugin maps with '.'
   Plug 'tpope/vim-repeat'
-
-  " Auto-completion for quotes, parens, brackets, etc.
-  Plug 'jiangmiao/auto-pairs'
 
   " Camelcase, undersore, acronym words motions
   Plug 'chaoren/vim-wordmotion'
@@ -144,19 +149,13 @@ call plug#begin('~/.vim/plugged')
   Plug 'chrisbra/csv.vim'
 
   " Copy link to line in repo
-  Plug 'vitapluvia/vim-gurl'
-
-  " Generate UUID
-  Plug 'kburdett/vim-nuuid'
+  Plug 'biggerfisch/vim-gurl'
 
   " A tree file system explorer
   Plug 'scrooloose/nerdtree'
 
   " Displays tags in a window, ordered by scope
   Plug 'majutsushi/tagbar'
-
-  " Nginx syntax
-  Plug 'chr4/nginx.vim'
 
   " === Git ===
 
@@ -201,10 +200,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'bling/vim-airline'
 
   " Visually displaying indent levels
-  Plug 'nathanaelkane/vim-indent-guides'
-
-  " A plugin to color colornames and codes
-  Plug 'chrisbra/Colorizer'
+  Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -221,16 +217,13 @@ let g:tagbar_autofocus = 0
 
 
 " === Indent lines ===
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_guide_size=1
-let g:indent_guides_start_level=2
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=236
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+let g:indentLine_char = '│'
 
 
-" === Gruvbox ===
+" === Theme ===
 colorscheme gruvbox
+let g:gruvbox_italic = 1
+set background=dark
 
 
 " === Airline ===
@@ -246,7 +239,7 @@ function! AirlineInit()
     let g:airline_section_b = airline#section#create_left(['file'])
     let g:airline_section_c = airline#section#create_left(['tagbar'])
     let g:airline_section_x = airline#section#create_left(['readonly'])
-    let g:airline_section_z = airline#section#create_right(['%l/%L'])
+    let g:airline_section_z = airline#section#create_right(['%l:%c/%L'])
 endfunction
 
 autocmd VimEnter * call AirlineInit()
@@ -265,18 +258,18 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_open_list = 1
 let g:ale_linters = {
 \ 'python': ['flake8', 'black', 'mypy'],
-\ 'typescript': ['tslint'],
-\ 'javascript': ['eslint'],
+\ 'md': ['mdl'],
+\ 'yaml': ['yamllint'],
+\ 'yml': ['yamllint'],
 \}
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'python': ['black', 'isort'],
-\ 'typesript': ['tslint'],
 \ 'yaml': ['yamlfix'],
-\ 'javascript': ['eslint'],
+\ 'yml': ['yamlfix'],
+\ 'json': ['jq']
 \}
 
 nnoremap <C-]> :ALENext<CR>
@@ -292,6 +285,14 @@ let g:SuperTabDefaultCompletionType = '<c-n>'
 nnoremap <C-p> :GitGutterPrevHunk<CR>
 nnoremap <C-n> :GitGutterNextHunk<CR>
 nnoremap U :GitGutterUndoHunk <CR>
+highlight SignColumn ctermbg=bg
+highlight GitGutterAdd    ctermfg=2 ctermbg=bg
+highlight GitGutterChange ctermfg=3 ctermbg=bg
+highlight GitGutterDelete ctermfg=1 ctermbg=bg
+highlight GitGutterChangeDelete ctermfg=166 ctermbg=bg
+let g:gitgutter_highlight_linenrs = 0
+let g:gitgutter_sign_modified_removed = '~͟'
+let g:gitgutter_sign_removed_above_and_below = '_͞'
 
 
 " === FZF ===
@@ -313,6 +314,14 @@ let g:fzf_action = {
 \ 'ctrl-v': 'vsplit',
 \ 'ctrl-a': 'select-all'
 \}
+
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, ' --ignore-dir={node_modules,fme,venv,jest_cache,logs} --ignore=package-lock.json', fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 
 " === NERDTree ===
@@ -399,7 +408,7 @@ nmap <silent> <C-d> <Plug>(pydocstring)
 
 
 " === COC  ===
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pyright']
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-jedi']
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>a  <Plug>(coc-codeaction)
@@ -419,14 +428,6 @@ nmap <leader>p  <Plug>(coc-format-selected)
 
 let g:python_highlight_all = 1
 
-let g:vimgurl_yank_register = '+'
 
-command! -bang -nargs=? -complete=dir GFiles
-    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, ' --ignore-dir={node_modules,fme,venv,jest_cache,logs} --ignore=package-lock.json', fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
-
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-au BufRead,BufNewFile *nginx* set filetype=nginx
+" ======== Vim Gurl ======================
+let g:vimgurl_yank_register = '+'  " copy to system buffer
