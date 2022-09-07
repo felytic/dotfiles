@@ -23,7 +23,7 @@ autocmd bufenter set colorcolumn=0  " Don't show colorcolumn by default
 autocmd FileType python set colorcolumn=89  " Highlight 89th column for python files
 
 set cursorline  " Highlight current line
-set fillchars=vert:│,fold:-,eob:\ ,
+set fillchars=vert:🭰,fold:-,eob:\ ,
 
 set splitbelow  " Vertical split splits below the current buffer
 set splitright  " Horizontalsplit splits at the right of the current buffer
@@ -37,19 +37,17 @@ set background=dark  " Use dark UI
 
 set diffopt+=vertical  " Use vertical split for diffs
 
-setlocal spell spelllang=en_us  " Set default language for spellchecking
-
 set list  " Show unprintable chars
 set listchars=tab:>-,trail:•,extends:#,nbsp:•  " List of chars to show
 
-set history=100  "Remember 100 last commands
+set history=100  " Remember 100 last commands
 set undolevels=100  " Use more levels of undo
 
-set nofoldenable  "Don't fold by default
+set nofoldenable  " Don't fold by default
 set foldmethod=indent  " Fold based on indentation
 set foldnestmax=5  " Maximum fold level
 
-set scrolloff=4  "Keep 4 lines above and below while scrolling
+set scrolloff=4  " Keep 4 lines above and below while scrolling
 
 highlight NonText ctermfg=0
 
@@ -142,9 +140,6 @@ call plug#begin('~/.vim/plugged')
   " Asynchronous linting/fixing
   Plug 'dense-analysis/ale'
 
-  " Perform all insert mode completions with Tab
-  Plug 'ervandew/supertab'
-
   " Working with CSV files
   Plug 'chrisbra/csv.vim'
 
@@ -175,9 +170,6 @@ call plug#begin('~/.vim/plugged')
 
   " Python docstring generator
   Plug 'heavenshell/vim-pydocstring'
-
-  " Python indent
-  Plug 'Vimjas/vim-python-pep8-indent'
 
   " Enhanced syntax highlightitng
   Plug 'sheerun/vim-polyglot'
@@ -217,7 +209,7 @@ let g:tagbar_autofocus = 0
 
 
 " === Indent lines ===
-let g:indentLine_char = '│'
+let g:indentLine_char = '🭰'
 
 
 " === Theme ===
@@ -274,11 +266,6 @@ let g:ale_fixers = {
 
 nnoremap <C-]> :ALENext<CR>
 nnoremap <C-[> :ALEPrevious<CR>
-
-
-" === Supertab ===
-let g:SuperTabDefaultCompletionType = '<c-n>'
-
 
 
 " === GitGutter ===
@@ -408,7 +395,7 @@ nmap <silent> <C-d> <Plug>(pydocstring)
 
 
 " === COC  ===
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-jedi']
+let g:coc_global_extensions = ['coc-tsserver', 'coc-jedi']
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>a  <Plug>(coc-codeaction)
@@ -428,6 +415,9 @@ nmap <leader>p  <Plug>(coc-format-selected)
 
 let g:python_highlight_all = 1
 
+" Use (Shift-)TAB to iterate through autocomplete list
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
 " ======== Vim Gurl ======================
 let g:vimgurl_yank_register = '+'  " copy to system buffer
