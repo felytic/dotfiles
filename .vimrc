@@ -166,10 +166,13 @@ call plug#begin('~/.vim/plugged')
   " Autocompletion
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+  " GitHub Copilot
+  Plug 'github/copilot.vim'
+
   " === Python ===
 
   " Python docstring generator
-  Plug 'heavenshell/vim-pydocstring'
+  Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 
   " Enhanced syntax highlightitng
   Plug 'sheerun/vim-polyglot'
@@ -251,7 +254,7 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {
-\ 'python': ['flake8', 'black', 'mypy'],
+\ 'python': ['ruff', 'black', 'mypy'],
 \ 'md': ['mdl'],
 \ 'yaml': ['yamllint'],
 \ 'yml': ['yamllint'],
@@ -369,6 +372,8 @@ call NERDTreeHighlightFile('xml', 15)
 call NERDTreeHighlightFile('yaml', 'magenta')
 call NERDTreeHighlightFile('yml', 'magenta')
 
+let g:NERDTreeMinimalMenu=1
+
 " === NERDTree Git Plugin ===
 " Prefixes for files with different git status
 let g:NERDTreeGitStatusIndicatorMapCustom = {
@@ -421,3 +426,6 @@ inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
 " ======== Vim Gurl ======================
 let g:vimgurl_yank_register = '+'  " copy to system buffer
+
+" ======== GitHub Copilot ======================
+" nmap <silent> gc :Copilot panel<CR>
