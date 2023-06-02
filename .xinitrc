@@ -25,7 +25,7 @@ fi
 
 setxkbmap -layout us,ua -variant altgr-intl, -option grp:lctrl_toggle,grp_led:caps,ctrl:nocaps
 
-xrandr --auto --output HDMI-0 --left-of DVI-D-0 &
+xrandr --auto --dpi 220
 
 xss-lock -- slock &
 udiskie -t &
