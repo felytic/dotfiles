@@ -24,6 +24,20 @@ setopt HIST_SAVE_NO_DUPS
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
+# del, home and end
+bindkey "\e[3~" delete-char
+bindkey "\e[H"  beginning-of-line
+bindkey "\e[F"  end-of-line
+
+# Use Ctrl+HJKL for navigation
+bindkey "^k" history-beginning-search-backward
+bindkey "^j" history-beginning-search-forward
+bindkey "^h" backward-char
+bindkey "^l" forward-char
+
+bindkey "^b" beginning-of-line
+bindkey "^e" end-of-line
+
 # ============================ FUNCTIONS ======================================
 
 git_branch() {
@@ -59,7 +73,7 @@ venv() {
 }
 
 PROMPT='%B%K{blue}%F{white}%~%f%k%b$(venv)%K{yellow}%F{black} $(git_branch)%f%k%F{yellow}%f '
-RPROMPT='%F{magenta}%T%f [%(?.%F{green}.%F{red})%?%f]'
+RPROMPT='%F{magenta}%*%f [%(?.%F{green}.%F{red})%?%f]'
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -85,8 +99,15 @@ alias ln='ln -i'
 
 alias py='python -m ptpython'
 
+alias update-system="yay -Syyu --overwrite '*'"
+alias remove-unused-packages="yay -Rs $(yay -Qdtq)"
+
 autoload -Uz promptinit
 promptinit
+
+# Set kitty as default terminal
+export TERMINAL=kitty
+export TERM=kitty
 
 # Set breakpoint() in Python to call pudb
 export PYTHONBREAKPOINT="pudb.set_trace"
