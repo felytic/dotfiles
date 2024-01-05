@@ -48,6 +48,11 @@ git_branch() {
 function cd() {
   builtin cd $@
 
+  # Check if a .env file exists in the current directory
+    if [ -f .env ]; then
+        source .env  # Source the .env file if it exists
+    fi
+
   if [[ -z "$VIRTUAL_ENV" ]] ; then
     ## If env folder is found then activate the vitualenv
       if [[ -d ./.venv ]] ; then
@@ -87,8 +92,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias v='vim'
-alias n='node'
+alias v='nvim'
 alias g='git'
 alias r='ranger'
 
@@ -102,13 +106,21 @@ alias py='python -m ptpython'
 alias update-system="yay -Syyu --overwrite '*'"
 alias remove-unused-packages="yay -Rs $(yay -Qdtq)"
 
+alias da="data-adapters"
+
 autoload -Uz promptinit
 promptinit
 
-# Set kitty as default terminal
-export TERMINAL=kitty
-export TERM=kitty
+# Set alacritty as default terminal
+export TERMINAL=alacritty
+export TERM=alacritty
 
 # Set breakpoint() in Python to call pudb
 export PYTHONBREAKPOINT="pudb.set_trace"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+export XDG_CURRENT_DESKTOP=sway
+export MOZ_ENABLE_WAYLAND=1
+
+export LD_LIBRARY_PATH=/usr/local/lib
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
