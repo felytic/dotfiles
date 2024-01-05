@@ -35,4 +35,14 @@
   default = current
 
 [commit]
-  gpgsign = true
+	gpgsign = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[safe]
+	directory = /home/felytic/dev/vault
+[credential]
+	helper = cache
