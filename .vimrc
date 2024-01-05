@@ -116,9 +116,6 @@ nnoremap <leader><leader> :w <CR>
 " This is important for COC and ALE work together
 let g:ale_disable_lsp = 1
 
-" Toggle folding by TAB
-map <TAB> za
-
 " ================================== PLUGINS =================================
 call plug#begin('~/.vim/plugged')
 
@@ -261,7 +258,7 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-\ 'python': ['black', 'isort'],
+\ 'python': ['black', 'isort', 'ruff'],
 \ 'yaml': ['yamlfix'],
 \ 'yml': ['yamlfix'],
 \ 'json': ['jq']
@@ -334,7 +331,7 @@ augroup END
 
 " Files to hide in NERDTree
 let NERDTreeIgnore = ['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$',
-                     \'\.o$', '__pycache__', '.git', 'venv', '.cache']
+                     \'\.o$', '__pycache__', '.git', 'venv']
 
 let NERDTreeHighlightCursorline = 0
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -428,4 +425,6 @@ inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 let g:vimgurl_yank_register = '+'  " copy to system buffer
 
 " ======== GitHub Copilot ======================
-" nmap <silent> gc :Copilot panel<CR>
+nmap <silent> gp :Copilot panel<CR>
+imap <silent><script><expr> <C-Space> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
