@@ -65,7 +65,7 @@ bindsym $mod+Left exec light -T 0.8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -156,7 +156,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # exit sway (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit sway?' -B 'Yes' 'i3-msg exit'"
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 ###############################################################################
 # COLORS
@@ -180,20 +180,7 @@ set $lightgray #bdae93
 ###############################################################################
 
 bar {
-    position top
-    status_command i3status
-    separator_symbol "🭰"
-    colors {
-        background $bg
-        # text color used for blocks that do not have a color specified.
-        statusline $lightgray
-        # workspaces section
-        #                    border  backgr. text
-        focused_workspace    $lightgray $lightgray $bg
-        inactive_workspace   $darkgray $darkgray $lightgray
-        active_workspace     $darkgray $darkgray $lightgray
-        urgent_workspace     $red $red $bg
-    }
+    swaybar_command waybar
 }
 
 # class                 border|backgr|text|indicator|child_border

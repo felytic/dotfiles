@@ -1,0 +1,210 @@
+/* Keyframes */
+
+@keyframes blink-critical {
+	to {
+		background-color: @critical;
+	}
+}
+
+/* Colors (gruvbox) */
+@define-color black	#282828;
+@define-color red	#cc241d;
+@define-color green	#98971a;
+@define-color yellow	#d79921;
+@define-color blue	#458588;
+@define-color purple	#b16286;
+@define-color aqua	#689d6a;
+@define-color gray	#a89984;
+@define-color brgray	#928374;
+@define-color brred	#fb4934;
+@define-color brgreen	#b8bb26;
+@define-color bryellow	#fabd2f;
+@define-color brblue	#83a598;
+@define-color brpurple	#d3869b;
+@define-color braqua	#8ec07c;
+@define-color white	#ebdbb2;
+@define-color bg2	#504945;
+@define-color orange #d65d0e;
+
+
+@define-color warning 	@orange;
+@define-color critical	@red;
+@define-color unfocused	@bg2;
+@define-color focused	@green;
+@define-color inactive	@purple;
+@define-color pulseaudio	@orange;
+@define-color network	@yellow;
+@define-color memory	@green;
+@define-color cpu	@blue;
+@define-color temperature	@aqua;
+@define-color battery	@purple;
+@define-color date	@gray;
+@define-color time	@white;
+
+/* Reset all styles */
+* {
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	box-shadow: none;
+	text-shadow: none;
+	icon-shadow: none;
+}
+
+/* The whole bar */
+#waybar {
+	background: @black;
+	color: @white;
+	font-family: Iosevka Etoile;
+	font-size: 10pt;
+  font-weight: 400;
+}
+
+/* Each critical module */
+#memory.critical,
+#cpu.critical,
+#temperature.critical,
+#battery.critical.discharging {
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-name: blink-critical;
+	animation-duration: 1s;
+}
+
+/* Each warning */
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#battery.warning.discharging {
+	color: @warning;
+  font-weight: bold;
+}
+
+/* Workspaces */
+#workspaces button {
+	padding-left: 1pt;
+	padding-right: 1pt;
+	color: @white;
+	background: @unfocused;
+}
+
+#workspaces button.visible {
+	color: @white;
+	background: @inactive;
+}
+
+#workspaces button.focused {
+	color: @black;
+	background: @focused;
+}
+
+#workspaces button.urgent {
+	color: @black;
+	background: @warning;
+}
+
+#workspaces button:hover {
+	background: @black;
+	color: @white;
+}
+
+#custom-arrow_workspaces {
+	color: @unfocused;
+	background: transparent;
+}
+
+#window {
+	margin-right: 10pt;
+	margin-left: 10pt;
+  font-weight: 200;
+}
+
+#tray,
+#pulseaudio,
+#network,
+#memory,
+#cpu,
+#temperature,
+#battery,
+#clock.date,
+#clock.time
+{
+  padding-left: 5pt;
+  padding-right: 5pt;
+  color: @black;
+}
+
+#custom-arrow_pulseaudio {
+	color: @pulseaudio;
+	background: @black;
+}
+
+#pulseaudio {
+  background: @pulseaudio;
+}
+
+#custom-arrow_network {
+	color: @network;
+	background: @pulseaudio;
+}
+
+#network {
+  background: @network;
+}
+
+#custom-arrow_memory {
+	color: @memory;
+	background: @network;
+}
+
+#memory {
+	background: @memory;
+}
+
+#custom-arrow_cpu {
+	color: @cpu;
+	background: @memory;
+}
+
+#cpu {
+	background: @cpu;
+}
+
+#custom-arrow_temperature {
+	color: @temperature;
+	background: @cpu;
+}
+
+#temperature {
+	background: @temperature;
+}
+
+#custom-arrow_battery {
+	color: @battery;
+	background: @temperature;
+}
+
+#battery {
+	background: @battery;
+}
+
+#custom-arrow_date {
+	color: @date;
+	background: @battery;
+}
+
+#clock.date {
+	background: @date;
+}
+
+#custom-arrow_time {
+	color: @time;
+	background: @date;
+}
+
+#clock.time {
+	background: @time;
+}

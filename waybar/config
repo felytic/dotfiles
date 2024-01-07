@@ -1,0 +1,160 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+    "sway/workspaces",
+    "custom/arrow_workspaces",
+    "sway/window"
+  ],
+  "modules-right": [
+    "tray",
+    "custom/arrow_pulseaudio",
+    "pulseaudio",
+    "custom/arrow_network",
+    "network",
+    "custom/arrow_memory",
+    "memory",
+    "custom/arrow_cpu",
+    "cpu",
+    "custom/arrow_temperature",
+    "temperature",
+    "custom/arrow_battery",
+    "battery",
+    "custom/arrow_date",
+    "clock#date",
+    "custom/arrow_time",
+    "clock#time"
+  ],
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "format": "{name}"
+  },
+
+  "custom/arrow_workspaces": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "tray": {
+    "spacing": 10
+  },
+
+  "custom/arrow_pulseaudio": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "scroll-step": 1,
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "tooltip-format": "{desc}"
+  },
+
+  "custom/arrow_network": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "network": {
+    "interval": 5,
+    "format-wifi": "  {signalStrength}%",
+    "tooltip-format": "{essid}",
+    "format-ethernet": " {ifname}",
+    "format-disconnected": "󰖪 "
+  },
+
+  "custom/arrow_memory": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "memory": {
+    "interval": 5,
+    "format": " {used:0.1f}G/{total:0.1f}G",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+    "tooltip": false
+  },
+
+  "custom/arrow_cpu": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "cpu": {
+    "interval": 5,
+    "tooltip": false,
+    "format": " {usage}%",
+    "format-alt": " {load}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "custom/arrow_temperature": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "temperature": {
+    "critical-threshold": 90,
+    "interval": 5,
+    "format": "{icon} {temperatureC}°",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip": false
+  },
+
+  "custom/arrow_battery": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "battery": {
+    "interval": 5,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-charging-full": "  {capacity}%",
+    "format-full": "{icon}  {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+
+  "custom/arrow_date": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "clock#date": {
+    "interval": 20,
+    "format": "{:%e %b 1%Y}"
+  },
+
+  "custom/arrow_time": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "clock#time": {
+    "interval": 1,
+    "format": "{:%H:%M:%S}",
+    "tooltip": false
+  }
+}
