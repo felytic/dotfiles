@@ -150,6 +150,10 @@ local plugins = {
 		},
 		config = true,
 	},
+	{
+		"ruifm/gitlinker.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 }
 
 local opts = {}
@@ -260,3 +264,8 @@ require("nvim-surround").setup()
 
 -- Comment.nvim
 require("Comment").setup()
+
+-- Gitlinker
+require("gitlinker").setup({
+  mappings = "<leader>t"
+})
