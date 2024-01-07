@@ -154,6 +154,7 @@ local plugins = {
 		"ruifm/gitlinker.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
+	{ "chaoren/vim-wordmotion" },
 }
 
 local opts = {}
@@ -202,6 +203,11 @@ require("neo-tree").setup({
 			visible = true,
 			hide_dotfiles = false,
 			hide_gitignored = true,
+		},
+	},
+	window = {
+		mappings = {
+			["<TAB>"] = "open_vsplit",
 		},
 	},
 })
@@ -267,5 +273,5 @@ require("Comment").setup()
 
 -- Gitlinker
 require("gitlinker").setup({
-  mappings = "<leader>t"
+	mappings = "<leader>t",
 })
