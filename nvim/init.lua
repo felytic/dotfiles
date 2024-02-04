@@ -22,6 +22,10 @@ vim.opt.cursorline = true -- Highlight current line
 
 vim.opt.swapfile = false -- Disable swap files
 
+vim.opt.splitbelow = true -- Vertical split splits below the current buffer
+vim.opt.splitright = true -- Horizontalsplit splits at the right of the current buffer
+vim.opt.diffopt = "internal,filler,closeoff,vertical" -- Use vertical split for diffs
+
 -- Highlight 89th column for python files
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
@@ -30,6 +34,16 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.opt.scrolloff = 4 -- Keep 4 lines above and below the cursor
 
+vim.opt.mouse = "" -- Disable mouse
+
+vim.opt.confirm = true -- Always ask for saving changes
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.geojson",
+	command = "set filetype=json",
+})
+
+vim.o.guifont = "Iosevka Term Extralight:h14"
 -------------------------------------------------------------------------------
 -- Abbreviations
 -------------------------------------------------------------------------------
@@ -133,7 +147,7 @@ local plugins = {
 		event = "VeryLazy",
 	},
 	{ "neovim/nvim-lspconfig" },
-	{ "ms-jpq/coq_nvim" },
+	{ "neoclide/coc.nvim" },
 	{ "sbdchd/neoformat" },
 	{ "lewis6991/gitsigns.nvim" },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl" },
@@ -141,33 +155,21 @@ local plugins = {
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
-	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim", -- required
-			"sindrets/diffview.nvim", -- optional - Diff integration
-			"nvim-telescope/telescope.nvim", -- optional
-		},
-		config = true,
-	},
+	{ "preservim/tagbar" },
+	{ "tpope/vim-repeat" },
 	{
 		"ruifm/gitlinker.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{ "chaoren/vim-wordmotion" },
+	{ "kdheepak/lazygit.nvim" },
+	{ "tpope/vim-fugitive" },
+	{ "NvChad/nvim-colorizer.lua" },
+  { "simrat39/rust-tools.nvim" },
+  { "mfussenegger/nvim-dap" }
 }
 
 local opts = {}
-
--- This coq.nvim settings need to be set before lazy.nvim is loaded
-vim.g.coq_settings = {
-	auto_start = "shut-up",
-	keymap = {
-		pre_select = true,
-		jump_to_mark = "",
-		manual_complete = "",
-	},
-}
 
 require("lazy").setup(plugins, opts)
 
@@ -188,7 +190,19 @@ vim.keymap.set("n", "<F7>", builtin.grep_string, {})
 -- Treesitter
 local configs = require("nvim-treesitter.configs")
 configs.setup({
-	ensure_installed = { "lua", "vim", "vimdoc", "python", "markdown", "dockerfile", "json", "yaml", "toml" },
+	ensure_installed = {
+		"lua",
+		"vim",
+		"vimdoc",
+		"python",
+		"markdown",
+		"dockerfile",
+		"json",
+		"yaml",
+		"toml",
+		"terraform",
+		"rust",
+	},
 	sync_install = false,
 	highlight = { enable = true },
 	indent = { enable = true },
@@ -208,6 +222,8 @@ require("neo-tree").setup({
 	window = {
 		mappings = {
 			["<TAB>"] = "open_vsplit",
+			["h"] = "close_node",
+			["l"] = "open",
 		},
 	},
 })
@@ -227,6 +243,12 @@ vim.g.copilot_no_tab_map = true
 -- LSP
 local lsp = require("lspconfig")
 lsp.pyright.setup({}) -- Python
+lsp.rust_analyzer.setup({
+	-- Server-specific settings. See `:help lspconfig-setup`
+	settings = {
+		["rust-analyzer"] = {},
+	},
+})
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -239,10 +261,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
--- Coq.nvim
-local coq = require("coq")
-lsp.pyright.setup(coq.lsp_ensure_capabilities({}))
+local rt = require("rust-tools")
+
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+
+-- COC.nvim
+local opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
+vim.keymap.set(
+	"i",
+	"<TAB>",
+	'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()',
+	opts
+)
+vim.keymap.set("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+
+-- Neoformat
 vim.keymap.set("n", "<C-f>", ":Neoformat<CR>")
+vim.g.neoformat_enabled_python = { "black", "isort", "ruff" }
 
 -- Git signs
 require("gitsigns").setup()
@@ -261,10 +305,6 @@ require("ibl").setup({
 -- Lualine
 require("lualine").setup()
 
--- Neogit
-require("neogit").setup()
-vim.keymap.set("n", "<leader>g", ":Neogit<CR>")
-
 -- Surround
 require("nvim-surround").setup()
 
@@ -274,4 +314,18 @@ require("Comment").setup()
 -- Gitlinker
 require("gitlinker").setup({
 	mappings = "<leader>t",
+})
+
+-- Tagbar
+vim.keymap.set("n", "<F4>", ":TagbarToggle<CR>", {})
+
+-- Lazygit
+vim.keymap.set("n", "<leader>g", ":LazyGit<CR>")
+
+-- Colorizer
+require("colorizer").setup({
+	user_default_options = {
+		names = false, -- "Name" codes like Blue or blue
+    RRGGBBAA = true, -- #RRGGBBAA hex codes
+	},
 })
