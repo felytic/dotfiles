@@ -35,6 +35,18 @@ input type:touchpad {
 output DP-2 pos 0 0
 output eDP-1 pos 0 1080
 
+# set background
+output * bg #000000 solid_color
+
+# Show programs that use XWayland
+for_window [shell="xwayland"] title_format "[XWayland] %title"
+
+# Enable screen sharing
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Start bluetooth manager
+exec blueman-applet
+
 ###############################################################################
 # KEYS MAPPINGS
 ###############################################################################
