@@ -79,6 +79,8 @@ vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
 -- Use H and L to move at the beggining and at the end of the line
 vim.keymap.set("n", "L", "$")
 vim.keymap.set("n", "H", "^")
+vim.keymap.set("v", "L", "$")
+vim.keymap.set("v", "H", "^")
 
 -- Use kj or jk for exit Insert mode
 vim.keymap.set("i", "jk", "<Esc>")
@@ -150,7 +152,6 @@ local plugins = {
 	{ "neoclide/coc.nvim" },
 	{ "sbdchd/neoformat" },
 	{ "lewis6991/gitsigns.nvim" },
-	{ "lukas-reineke/indent-blankline.nvim", main = "ibl" },
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -165,8 +166,8 @@ local plugins = {
 	{ "kdheepak/lazygit.nvim" },
 	{ "tpope/vim-fugitive" },
 	{ "NvChad/nvim-colorizer.lua" },
-  { "simrat39/rust-tools.nvim" },
-  { "mfussenegger/nvim-dap" }
+	{ "simrat39/rust-tools.nvim" },
+	{ "mfussenegger/nvim-dap" },
 }
 
 local opts = {}
@@ -184,8 +185,12 @@ vim.cmd("colorscheme gruvbox")
 -- Telescope
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<F6>", builtin.git_files, {})
-vim.keymap.set("n", "<F5>", builtin.live_grep, {})
-vim.keymap.set("n", "<F7>", builtin.grep_string, {})
+vim.keymap.set("n", "<F5>", function()
+	builtin.live_grep({ use_quickfix = true })
+end, {})
+vim.keymap.set("n", "<F7>", function()
+	builtin.grep_string({ use_quickfix = true })
+end, {})
 
 -- Treesitter
 local configs = require("nvim-treesitter.configs")
@@ -256,25 +261,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-		vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<space>r", vim.lsp.buf.rename, opts)
 		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+		vim.keymap.set("n", "<C-]>", vim.diagnostic.goto_next, opts)
+		vim.keymap.set("n", "<C-[>", vim.diagnostic.goto_prev, opts)
 	end,
 })
 
 local rt = require("rust-tools")
 
 rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
+	server = {
+		on_attach = function(_, bufnr)
+			-- Hover actions
+			vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+			-- Code action groups
+			vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+		end,
+	},
 })
 
 -- COC.nvim
+-- Autocomplete
+function _G.check_back_space()
+	local col = vim.fn.col(".") - 1
+	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
+end
 local opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
 vim.keymap.set(
 	"i",
@@ -286,21 +298,13 @@ vim.keymap.set("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]
 
 -- Neoformat
 vim.keymap.set("n", "<C-f>", ":Neoformat<CR>")
-vim.g.neoformat_enabled_python = { "black", "isort", "ruff" }
+vim.g.neoformat_enabled_python = { "ruff", "isort" }
 
 -- Git signs
 require("gitsigns").setup()
 vim.keymap.set("n", "<C-n>", ":Gitsigns next_hunk<CR>")
 vim.keymap.set("n", "<C-p>", ":Gitsigns prev_hunk<CR>")
 vim.keymap.set("n", "U", ":Gitsigns reset_hunk<CR>")
-
--- ibl
-require("ibl").setup({
-	scope = { enabled = false },
-	indent = {
-		char = "▏",
-	},
-})
 
 -- Lualine
 require("lualine").setup()
@@ -326,6 +330,6 @@ vim.keymap.set("n", "<leader>g", ":LazyGit<CR>")
 require("colorizer").setup({
 	user_default_options = {
 		names = false, -- "Name" codes like Blue or blue
-    RRGGBBAA = true, -- #RRGGBBAA hex codes
+		RRGGBBAA = true, -- #RRGGBBAA hex codes
 	},
 })
