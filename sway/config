@@ -32,8 +32,20 @@ input type:touchpad {
 }
 
 # configire monitors positions
-output DP-2 pos 0 0
-output eDP-1 pos 0 1080
+output DP-3 {
+  pos 0 0
+  scale 2.0
+}
+
+output DP-4 {
+  pos 0 0
+  scale 2.0
+}
+
+output eDP-1 {
+  pos 0 1080
+  scale 2.0
+}
 
 # set background
 output * bg #000000 solid_color
@@ -175,7 +187,7 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg e
 ###############################################################################
 
 # Gruvbox color theme
-set $white #ffffff
+set $white #ebdbb2
 set $bg #282828
 set $red #cc241d
 set $green #98971a
@@ -201,3 +213,5 @@ client.focused_inactive $darkgray $darkgray $lightgray $green $darkgray
 client.unfocused        $darkgray $darkgray $lightgray $green $darkgray
 client.urgent           $red $red $white $red $red
 default_border          none
+
+include /etc/sway/config.d/*
