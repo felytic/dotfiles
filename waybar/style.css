@@ -57,8 +57,8 @@
 #waybar {
 	background: @black;
 	color: @white;
-	font-family: Iosevka Etoile;
-	font-size: 10pt;
+	font-family: Iosevka Term Slab;
+	font-size: 11pt;
   font-weight: 400;
 }
 
