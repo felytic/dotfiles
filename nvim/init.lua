@@ -26,24 +26,17 @@ vim.opt.splitbelow = true -- Vertical split splits below the current buffer
 vim.opt.splitright = true -- Horizontalsplit splits at the right of the current buffer
 vim.opt.diffopt = "internal,filler,closeoff,vertical" -- Use vertical split for diffs
 
--- Highlight 89th column for python files
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
-	command = "set colorcolumn=89",
-})
-
 vim.opt.scrolloff = 4 -- Keep 4 lines above and below the cursor
 
 vim.opt.mouse = "" -- Disable mouse
 
 vim.opt.confirm = true -- Always ask for saving changes
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = "*.geojson",
-	command = "set filetype=json",
-})
+vim.opt.hidden = false -- Don't hide buffers when switching
 
-vim.o.guifont = "Iosevka Term Extralight:h14"
+vim.api.nvim_set_keymap('n', '#', '*', { noremap = true }) -- Search forwards
+
+
 -------------------------------------------------------------------------------
 -- Abbreviations
 -------------------------------------------------------------------------------
@@ -99,11 +92,8 @@ vim.keymap.set("v", "<leader>p", '"+p')
 vim.keymap.set("v", "<leader>P", '"+P')
 
 -- Resize buffers with Alt-< and Alt->
-vim.keymap.set("n", "<M-<>", ":vertical resize -1<CR>")
-vim.keymap.set("n", "<M->>", ":vertical resize +1<CR>")
-
--- Insert python breakpoint
-vim.keymap.set("n", "<leader>b", "obreakpoint()<Esc>")
+vim.keymap.set("n", "<M-->", ":vertical resize -1<CR>")
+vim.keymap.set("n", "<M-=>", ":vertical resize +1<CR>")
 
 -------------------------------------------------------------------------------
 -- Lazy.nvim setup
@@ -123,12 +113,32 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -------------------------------------------------------------------------------
+-- Python
+-------------------------------------------------------------------------------
+
+-- Highlight 89th column for python files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "python",
+	command = "set colorcolumn=89",
+})
+
+-- Insert python breakpoint
+vim.keymap.set("n", "<leader>b", "obreakpoint()<Esc>")
+
+
+-------------------------------------------------------------------------------
 -- Plugins list
 -------------------------------------------------------------------------------
 
 local plugins = {
 	{ "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
 	{ "zbirenbaum/copilot.lua" },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    config = function()
+      require("CopilotChat").setup()
+    end,
+  },
 	{ "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	{
@@ -253,6 +263,9 @@ lsp.rust_analyzer.setup({
 	settings = {
 		["rust-analyzer"] = {},
 	},
+  on_attach = function(client, bufnr)
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
 })
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -332,4 +345,10 @@ require("colorizer").setup({
 		names = false, -- "Name" codes like Blue or blue
 		RRGGBBAA = true, -- #RRGGBBAA hex codes
 	},
+})
+
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.geojson",
+	command = "set filetype=json",
 })
