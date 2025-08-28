@@ -42,7 +42,8 @@ vim.opt.updatetime = 250 -- Make NeoVim more responsive
 
 vim.opt.laststatus = 3 -- Show a single statusline at the bottom
 
-vim.opt.colorcolumn = "89" -- Highlight 89th column
+vim.opt.colorcolumn = "121" -- Highlight 121st column
+
 -------------------------------------------------------------------------------
 -- Abbreviations
 -------------------------------------------------------------------------------
@@ -113,7 +114,7 @@ vim.keymap.set("n", "N", "Nzzzv", { noremap = true, silent = true })
 vim.keymap.set("n", "<TAB>", "za", { noremap = true, silent = true })
 
 -- Insert python breakpoint
-vim.keymap.set("n", "<leader>b", "Obreakpoint()<Esc>j", { noremap = true })
+vim.keymap.set("n", "<leader>b", "obreakpoint()<Esc>j", { noremap = true })
 
 -------------------------------------------------------------------------------
 -- Lazy.nvim setup
@@ -206,6 +207,7 @@ local plugins = {
         },
         ruff = {},
         pyright = {},
+        mypy = {},
         jsonls = {
           init_options = {
             filetypes = { "json", "jsonc", "geojson" }
@@ -241,8 +243,9 @@ local plugins = {
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
           vim.keymap.set("n", "<C-]>", vim.diagnostic.goto_next, opts)
           vim.keymap.set("n", "<C-[>", vim.diagnostic.goto_prev, opts)
-          vim.keymap.set("n", "<C-F>", function() vim.lsp.buf.format({ async = true }) end,
-            { noremap = true, silent = true })
+          vim.keymap.set("n", "<C-f>", function()
+            require("conform").format({ async = true, lsp_fallback = true })
+          end, { noremap = true, silent = true })
         end,
       })
     end,
@@ -262,8 +265,6 @@ local plugins = {
       require("neo-tree").setup({
         filesystem = {
           filtered_items = {
-            visible = true,
-            hide_dotfiles = false,
             hide_gitignored = true,
           },
         },
@@ -281,6 +282,7 @@ local plugins = {
     -- Autocompletion
     'saghen/blink.cmp',
     dependencies = 'rafamadriz/friendly-snippets',
+    version = '1.*',
     opts = {
       keymap = {
         preset = 'cmdline',
@@ -328,6 +330,11 @@ local plugins = {
     "preservim/tagbar",
     config = function()
       vim.keymap.set("n", "<F4>", "<cmd>TagbarToggle<CR>")
+      vim.api.nvim_exec([[
+        hi! link TagbarAccessPublic GruvboxGreen
+        hi! link TagbarAccessProtected GruvboxBlue
+        hi! link TagbarAccessPrivate   GruboxRed
+      ]], false)
     end
   },
   { -- Better folding
@@ -405,28 +412,44 @@ local plugins = {
       vim.g.copilot_no_tab_map = true
     end
   },
+  -- linting
   {
-    -- GitHub Copilot chat
-    "CopilotC-Nvim/CopilotChat.nvim",
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufWritePost" },
     config = function()
-      require("CopilotChat").setup()
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        python = { "mypy", "ruff" }, -- diagnostics
+        yaml   = { "yamllint" },
+        json   = { "jsonlint" },
+        -- add more linters here
+      }
     end,
   },
-  {
-    -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local null_ls = require("null-ls")
 
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.diagnostics.mypy,
+  -- formatting
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+        yaml   = { "yamlfmt" },
+        json   = { "jq" },
+      },
+    },
+  },
+  { -- Colorize hex colors, RGB, etc
+    "NvChad/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup({
+        user_default_options = {
+          names = false,   -- "Name" codes like Blue or blue
+          RRGGBBAA = true, -- #RRGGBBAA hex codes
         },
       })
     end,
-  }
+  },
+  { "chaoren/vim-wordmotion" },
 }
 
 require("lazy").setup(plugins, {})
