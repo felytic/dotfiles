@@ -285,11 +285,9 @@ local plugins = {
           },
         },
         ruff = {},
-        pyright = {},
         mypy = {},
         jsonls = {
-          init_options = {
-            filetypes = { "json", "jsonc", "geojson" }
+          init_options = { filetypes = { "json", "jsonc", "geojson" }
           }
         }
       }
@@ -410,6 +408,28 @@ local plugins = {
   ------ Rainbow delimiters ---------------------------------------------------
   {
     "HiPhish/rainbow-delimiters.nvim",
+  },
+
+  ------ Indent line highlighting ---------------------------------------------
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    config = function()
+      require("ibl").setup({
+        indent = {
+          char = "▏",
+          tab_char = "▏",
+        },
+        scope = {
+          enabled = true,
+          show_start = false,
+          show_end = false,
+          injected_languages = false,
+          highlight = { "Comment" },
+          priority = 500,
+        },
+      })
+    end,
   },
 
   ------ Show git changes in the gutter ---------------------------------------
@@ -572,6 +592,20 @@ local plugins = {
   ------ Better word motions --------------------------------------------------
   {
     "chaoren/vim-wordmotion"
+  },
+
+  ------ None-ls (null-ls successor) for additional LSP sources ----------------
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.diagnostics.mypy,
+        },
+      })
+    end,
   },
 }
 
