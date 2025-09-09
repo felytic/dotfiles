@@ -77,8 +77,10 @@ venv() {
   fi
 }
 
-PROMPT='%B%K{blue}%F{fg}%~%f%k%b$(venv)%K{yellow}%F{black} $(git_branch)%f%k%F{yellow}%f '
-RPROMPT='%F{magenta}%*%f [%(?.%F{green}.%F{red})%?%f]'
+# PROMPT=$'%(?.%F{green}.%F{red})%K{black}%*%f%F{black}%K{blue} %f%B%K{blue}%F{fg}%~%f%k%b$(venv)%K{yellow}%F{black} $(git_branch)%f%k%F{yellow}%f '
+PROMPT=$'%(?..%B%F{red}%K{black}%? %f%F{black}%K{blue} %f)%f%B%K{blue}%F{fg}%~%f%k%b$(venv)%K{yellow}%F{black} $(git_branch)%f%k%F{yellow}%f '
+# PROMPT='%B%K{blue}%(?.%F{fg}.%F{red})%~%f%k%b$(venv)%K{yellow}%F{black} $(git_branch)%f%k%F{yellow}%f '
+# RPROMPT='%F{magenta}%*%f [%(?.%F{green}.%F{red})%?%f]'
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -95,6 +97,7 @@ alias l='ls -CF'
 alias v='nvim'
 alias g='git'
 alias r='ranger'
+alias y='yazi'
 
 # Confirmation
 alias mv='mv -i'
@@ -108,6 +111,8 @@ alias remove-unused-packages="yay -Rs $(yay -Qdtq)"
 
 alias da="data-adapters"
 
+alias c="cargo"
+
 autoload -Uz promptinit
 promptinit
 
@@ -119,12 +124,15 @@ export TERM=alacritty
 export PYTHONBREAKPOINT="pudb.set_trace"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
-export XDG_CURRENT_DESKTOP=sway
-export MOZ_ENABLE_WAYLAND=1
-
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export ELECTRON_ENABLE_WAYLAND=1
+export CHROMIUM_USER_FLAGS="--enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland"
+
+export GPG_TTY=/dev/pts/1
 
 export GPG_TTY=$(tty)
+
+export EDITOR=nvim
