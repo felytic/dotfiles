@@ -124,9 +124,11 @@ vim.keymap.set("n", "H", "^")
 vim.keymap.set("v", "L", "$")
 vim.keymap.set("v", "H", "^")
 
------- Use kj or jk for exit Insert mode --------------------------------------
+------ Use kj or jk for exit Insert mode and Terminal mode --------------------
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("i", "kj", "<Esc>")
+vim.keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set("t", "kj", "<C-\\><C-n>", { noremap = true, silent = true })
 
 ------ Clipboard Operations ---------------------------------------------------
 vim.keymap.set("v", "<leader>y", '"+y')
@@ -156,6 +158,11 @@ vim.keymap.set("n", "<TAB>", "za", { noremap = true, silent = true })
 -- Add Python breakpoint
 vim.keymap.set("n", "<leader>b", "obreakpoint()<Esc>j", { noremap = true })
 
+-- Format with LSP
+vim.keymap.set("n", "<C-f>", function()
+  vim.lsp.buf.format({ async = true })
+end, { noremap = true, silent = true, desc = "Format buffer" })
+
 ------ Visual Mode Enhancements -----------------------------------------------
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
@@ -184,13 +191,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("VimResized", {
   callback = function()
     vim.cmd("tabdo wincmd =")
-  end,
-})
-
------- Update colorcolumn when entering directory with pyproject.toml ---------
-vim.api.nvim_create_autocmd({ "DirChanged", "BufEnter" }, {
-  callback = function()
-    set_colorcolumn_from_pyproject()
   end,
 })
 
@@ -284,16 +284,23 @@ local plugins = {
             },
           },
         },
+        ty = {
+          settings = {
+            ty = {
+              completions = {
+                autoImport = false, -- Disable out-of-scope completion suggestions
+              },
+            },
+          },
+        },
         ruff = {},
-        mypy = {},
+        yamlls = {},
         jsonls = {
-          init_options = { filetypes = { "json", "jsonc", "geojson" }
-          }
+          init_options = { filetypes = { "json", "jsonc", "geojson" } }
         }
       }
     },
     config = function(_, opts)
-      local lsp = require("lspconfig")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
       local on_attach = function(client, bufnr)
@@ -305,21 +312,21 @@ local plugins = {
         vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "<C-]>", vim.diagnostic.goto_next, opts)
         vim.keymap.set("n", "<C-[>", vim.diagnostic.goto_prev, opts)
-        vim.keymap.set("n", "<C-f>", function()
-          require("conform").format({ async = true, lsp_fallback = true })
-        end, { noremap = true, silent = true })
       end
 
+      local default_capabilities = cmp_nvim_lsp.default_capabilities()
+      default_capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
+
       for server, config in pairs(opts.servers) do
-        config.capabilities = cmp_nvim_lsp.default_capabilities()
+        config.capabilities = default_capabilities
         config.on_attach = on_attach
 
-        config.capabilities.textDocument.foldingRange = {
-          dynamicRegistration = false,
-          lineFoldingOnly = true
-        }
-
-        lsp[server].setup(config)
+        -- Use the new vim.lsp.config API
+        vim.lsp.config[server] = config
+        vim.lsp.enable(server)
       end
     end,
   },
@@ -367,7 +374,41 @@ local plugins = {
     },
     config = function()
       local cmp = require("cmp")
+
+      -- Map LSP completion kinds to Treesitter/syntax highlight groups
+      vim.api.nvim_set_hl(0, "CmpItemAbbrFunction", { link = "Function" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrMethod", { link = "Function" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrConstructor", { link = "Function" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrClass", { link = "Type" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrInterface", { link = "Type" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrStruct", { link = "@variable" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrKeyword", { link = "Keyword" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrVariable", { link = "@variable" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrField", { link = "@variable.member" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrProperty", { link = "@property" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrEnum", { link = "Type" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrConstant", { link = "Constant" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrModule", { link = "@module" })
+      vim.api.nvim_set_hl(0, "CmpItemAbbrTypeParameter", { link = "@variable.parameter" })
+
       cmp.setup({
+        matching = {
+          disallow_fuzzy_matching = true,
+          disallow_fullfuzzy_matching = true,
+          disallow_partial_fuzzy_matching = true,
+          disallow_partial_matching = true,
+          disallow_prefix_unmatching = true,
+        },
+        formatting = {
+          format = function(entry, vim_item)
+            vim_item.menu = ({
+              nvim_lsp = "[LSP]",
+              buffer = "[Buf]",
+              path = "[Path]",
+            })[entry.source.name]
+            return vim_item
+          end,
+        },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
           ["<Tab>"] = cmp.mapping(function(fallback)
@@ -384,13 +425,6 @@ local plugins = {
               else
                 fallback()
               end
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_previous_item()
-            else
-              fallback()
             end
           end, { "i", "s" }),
         }),
@@ -533,48 +567,7 @@ local plugins = {
     end
   },
 
-  ------ GitHub Copilot -------------------------------------------------------
-  {
-    "zbirenbaum/copilot.lua",
-    config = function()
-      require("copilot").setup({
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-Space>",
-          },
-        },
-      })
-      vim.keymap.set("n", "gp", ":Copilot panel<CR>", {})
-      vim.g.copilot_no_tab_map = true
-    end
-  },
 
-  ------ Linter ---------------------------------------------------------------
-  {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPost", "BufWritePost" },
-    config = function()
-      local lint = require("lint")
-      lint.linters_by_ft = {
-        python = { "mypy", "ruff" },
-        yaml   = { "yamllint" },
-        json   = { "jsonlint" },
-      }
-    end,
-  },
-
-  ------ Formatter ------------------------------------------------------------
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
-        yaml   = { "yamlfmt" },
-        json   = { "jq" },
-      },
-    },
-  },
 
   ------ Show colors for hex codes and color names ----------------------------
   {
@@ -594,18 +587,30 @@ local plugins = {
     "chaoren/vim-wordmotion"
   },
 
-  ------ None-ls (null-ls successor) for additional LSP sources ----------------
+  ------ Markdown Preview
   {
-    "nvimtools/none-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    priority = 49,
+  },
+
+  ------ Claude Code AI Integration
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
     config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.diagnostics.mypy,
+      require("claude-code").setup({
+        -- Terminal window settings
+        window = {
+          split_ratio = 0.5, -- Percentage of screen for the terminal window (height for horizontal, width for vertical splits)
+          position = "vertical",
         },
-      })
-    end,
+      }
+      )
+      vim.keymap.set('n', 'cc', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
+    end
   },
 }
 
